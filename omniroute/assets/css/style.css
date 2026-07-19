@@ -574,3 +574,9 @@ tbody tr:hover {
   border-radius: 8px;
   margin: 1.5rem 0;
 }
+
+.back-home:hover {
+  background: var(--bg-tertiary);
+  color: var(--accent-cyan) !important;
+  opacity: 1 !important;
+}
