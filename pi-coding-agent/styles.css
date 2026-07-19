@@ -341,7 +341,6 @@ a:hover {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  width: 44px;
   padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
