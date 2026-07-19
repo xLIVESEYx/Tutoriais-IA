@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Primeiros passos com OpenCode - Conecte provedores, configure AGENTS.md e comece a codar">
+  <title>Primeiros Passos | OpenCode Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      <div class="content-wrapper">
+        <h1>🚀 Primeiros Passos</h1>
+        <p class="lead" style="color: var(--text-secondary);">Configure o OpenCode em 3 passos simples e comece a codar com IA.</p>
+
+        <section class="mt-4">
+          <h2>1. Conecte um Provedor de IA</h2>
+          <p>Execute <code>opencode</code> no terminal e use o comando <code>/connect</code> para adicionar um provedor.</p>
+
+          <div class="card-tech">
+            <pre><code>opencode
+/connect</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Você verá uma lista de provedores disponíveis. Selecione um e siga as instruções.</p>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Recomendado para iniciantes:</strong><br>
+            <strong>OpenCode Zen</strong> — Modelos curados e testados pela equipe. Pague por uso.<br>
+            <strong>OpenCode Go</strong> — Plano de baixo custo com modelos abertos populares.<br>
+            <strong>GitHub Copilot</strong> — Use sua assinatura Copilot existente.<br>
+            <strong>ChatGPT Plus/Pro</strong> — Use sua assinatura OpenAI.
+          </div>
+
+          <div class="card-tech">
+            <h3>Autenticação via OAuth</h3>
+            <p style="color: var(--text-secondary);">Para provedores como Anthropic (Claude Pro/Max), OpenAI (ChatGPT Plus/Pro) e GitHub Copilot, você pode autenticar via OAuth — o navegador abre automaticamente para autorização.</p>
+            <pre><code>/connect
+# Selecione "Login with X"
+# Navegador abre → Autorize → Pronto!</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Usando API Key</h3>
+            <p style="color: var(--text-secondary);">Para provedores como DeepSeek, Groq, OpenRouter, basta colar sua API key:</p>
+            <pre><code>/connect
+# Selecione o provedor
+# Escolha "Manually enter API Key"
+# Cole sua chave</code></pre>
+            <p style="color: var(--text-secondary);">As chaves ficam armazenadas em <code>~/.local/share/opencode/auth.json</code></p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>2. Inicialize o Projeto</h2>
+          <p>Navegue até seu projeto e execute o comando <code>/init</code> para o OpenCode analisar o código e criar regras personalizadas.</p>
+
+          <div class="card-tech">
+            <pre><code>cd /path/to/seu/projeto
+opencode
+/init</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">
+              ✅ O OpenCode analisa seu repositório<br>
+              ✅ Cria/atualiza o arquivo <code>AGENTS.md</code> com comandos de build, lint, teste e convenções<br>
+              ✅ Recomendado: versionar o <code>AGENTS.md</code> no Git
+            </p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>3. Selecione um Modelo</h2>
+          <p>Execute <code>/models</code> para ver todos os modelos disponíveis nos provedores configurados.</p>
+
+          <div class="card-tech">
+            <pre><code>/models</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Selecione o modelo desejado com as setas e Enter. Você pode alternar entre modelos a qualquer momento.</p>
+          </div>
+
+          <div class="alert-success">
+            <strong>✅ Dica:</strong> Use <code>Ctrl+T</code> para alternar entre variantes de pensamento (high/max reasoning) do modelo atual.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📝 Comandos Essenciais do TUI</h2>
+
+          <div class="card-tech">
+            <table>
+              <thead>
+                <tr>
+                  <th>Comando</th>
+                  <th>Ação</th>
+                  <th>Atalho</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/connect</code></td>
+                  <td>Adicionar provedor de IA</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td><code>/init</code></td>
+                  <td>Criar/atualizar AGENTS.md</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td><code>/models</code></td>
+                  <td>Listar modelos disponíveis</td>
+                  <td><code>Ctrl+X M</code></td>
+                </tr>
+                <tr>
+                  <td><code>/new</code></td>
+                  <td>Nova sessão</td>
+                  <td><code>Ctrl+X N</code></td>
+                </tr>
+                <tr>
+                  <td><code>/undo</code></td>
+                  <td>Desfazer última mensagem</td>
+                  <td><code>Ctrl+X U</code></td>
+                </tr>
+                <tr>
+                  <td><code>/redo</code></td>
+                  <td>Refazer alteração desfeita</td>
+                  <td><code>Ctrl+X R</code></td>
+                </tr>
+                <tr>
+                  <td><code>/help</code></td>
+                  <td>Abrir ajuda</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td><code>/exit</code></td>
+                  <td>Sair do OpenCode</td>
+                  <td><code>Ctrl+X Q</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🎯 Fluxo de Trabalho Típico</h2>
+
+          <div class="card-tech">
+            <h3>Fazer Perguntas</h3>
+            <p style="color: var(--text-secondary);">Use <code>@</code> para buscar arquivos do projeto fuzzy-search:</p>
+            <pre><code>Como a autenticação é feita em @packages/functions/src/api/index.ts</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Criar um Plano</h3>
+            <p style="color: var(--text-secondary);">Use <strong>Tab</strong> para alternar para o agente <strong>Plan</strong> (read-only) e peça um plano:</p>
+            <pre><code>Precisamos adicionar exclusão lógica de notas.
+Crie um plano de implementação.</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Implementar</h3>
+            <p style="color: var(--text-secondary);">Volte ao agente <strong>Build</strong> com Tab e peça para implementar:</p>
+            <pre><code>Parece bom! Vá em frente e implemente.</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Desfazer Mudanças</h3>
+            <pre><code>/undo</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">Reverte as alterações de arquivo e volta à mensagem anterior. Pode ser usado múltiplas vezes.</p>
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximos passos</h2>
+          <p style="color: var(--text-secondary);">Explore os provedores disponíveis e os modelos recomendados.</p>
+          <div style="margin-top: 1.5rem;">
+            <a href="providers.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin: 0.5rem;">
+              Ver Provedores →
+            </a>
+            <a href="modelos.html" class="btn btn-lg btn-outline-light" style="padding: 1rem 2rem; border-radius: 12px; font-weight: 600; margin: 0.5rem;">
+              Ver Modelos e Preços →
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

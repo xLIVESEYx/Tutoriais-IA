@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interfaces do OpenCode - TUI completa, comandos CLI, extensão VS Code/IDE e Web UI">
+  <title>TUI / CLI / IDE / Web | OpenCode Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      <div class="content-wrapper">
+        <h1>💻 TUI / CLI / IDE / Web</h1>
+        <p class="lead" style="color: var(--text-secondary);">O OpenCode está disponível em quatro interfaces. Escolha a que melhor se adapta ao seu fluxo.</p>
+
+        <section class="mt-4">
+          <h2>⌨️ TUI (Terminal User Interface)</h2>
+          <p>A interface principal do OpenCode. Basta executar <code>opencode</code> no terminal.</p>
+
+          <div class="card-tech">
+            <h3>Comandos Slash</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Comando</th>
+                  <th>Ação</th>
+                  <th>Atalho</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>/connect</code></td><td>Adicionar provedor</td><td>—</td></tr>
+                <tr><td><code>/init</code></td><td>Criar AGENTS.md</td><td>—</td></tr>
+                <tr><td><code>/compact</code></td><td>Compactar sessão</td><td><code>Ctrl+X C</code></td></tr>
+                <tr><td><code>/models</code></td><td>Listar modelos</td><td><code>Ctrl+X M</code></td></tr>
+                <tr><td><code>/new</code></td><td>Nova sessão</td><td><code>Ctrl+X N</code></td></tr>
+                <tr><td><code>/sessions</code></td><td>Listar sessões</td><td><code>Ctrl+X L</code></td></tr>
+                <tr><td><code>/undo</code></td><td>Desfazer alterações</td><td><code>Ctrl+X U</code></td></tr>
+                <tr><td><code>/redo</code></td><td>Refazer alterações</td><td><code>Ctrl+X R</code></td></tr>
+                <tr><td><code>/share</code></td><td>Compartilhar sessão</td><td>—</td></tr>
+                <tr><td><code>/export</code></td><td>Exportar como Markdown</td><td><code>Ctrl+X X</code></td></tr>
+                <tr><td><code>/editor</code></td><td>Abrir editor externo</td><td><code>Ctrl+X E</code></td></tr>
+                <tr><td><code>/help</code></td><td>Ajuda</td><td>—</td></tr>
+                <tr><td><code>/exit</code></td><td>Sair</td><td><code>Ctrl+X Q</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-tech">
+            <h3>Funcionalidades TUI</h3>
+            <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li><strong>@arquivo</strong> — Referencie arquivos com busca fuzzy</li>
+              <li><strong>!comando</strong> — Execute comandos shell diretamente</li>
+              <li><strong>Ctrl+T</strong> — Alterne variantes de modelo (thinking)</li>
+              <li><strong>Tab</strong> — Alterne entre agentes Build/Plan</li>
+              <li>Arraste imagens para adicionar ao prompt</li>
+              <li>Paleta de comandos com <code>Ctrl+P</code></li>
+            </ul>
+          </div>
+
+          <div class="card-tech">
+            <h3>Flags de Inicialização</h3>
+            <pre><code>opencode                         # Inicia TUI no diretório atual
+opencode /path/to/projeto        # Inicia em diretório específico
+opencode -c                      # Continua última sessão
+opencode -s <session-id>         # Continua sessão específica
+opencode --auto                  # Auto-approve permissions
+opencode --model provider/model  # Modelo específico
+opencode --agent plan            # Agente específico</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📟 CLI (Command Line Interface)</h2>
+          <p>Comandos para automação e scripting:</p>
+
+          <div class="card-tech">
+            <h3>Comandos Principais</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Comando</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>opencode run "prompt"</code></td><td>Modo não-interativo (óptimo para scripts)</td></tr>
+                <tr><td><code>opencode serve</code></td><td>Servidor headless (API HTTP)</td></tr>
+                <tr><td><code>opencode web</code></td><td>Servidor com interface web</td></tr>
+                <tr><td><code>opencode attach &lt;url&gt;</code></td><td>Conectar TUI a servidor remoto</td></tr>
+                <tr><td><code>opencode session list</code></td><td>Listar sessões</td></tr>
+                <tr><td><code>opencode stats</code></td><td>Estatísticas de uso e custos</td></tr>
+                <tr><td><code>opencode models</code></td><td>Listar modelos disponíveis</td></tr>
+                <tr><td><code>opencode auth login</code></td><td>Configurar credenciais</td></tr>
+                <tr><td><code>opencode agent create</code></td><td>Criar novo agente interativamente</td></tr>
+                <tr><td><code>opencode mcp add</code></td><td>Adicionar servidor MCP</td></tr>
+                <tr><td><code>opencode plugin &lt;module&gt;</code></td><td>Instalar plugin npm</td></tr>
+                <tr><td><code>opencode upgrade</code></td><td>Atualizar OpenCode</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-tech">
+            <h3>Modo Run com Attach</h3>
+            <p style="color: var(--text-secondary);">Evite cold boot de MCP servers conectando a um servidor existente:</p>
+            <pre><code># Terminal 1: servidor
+opencode serve
+
+# Terminal 2: executa comandos
+opencode run --attach http://localhost:4096 "Explique closures"</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔌 IDE (VS Code / Cursor / Windsurf)</h2>
+
+          <div class="card-tech">
+            <h3>Instalação Automática</h3>
+            <p style="color: var(--text-secondary);">Abra o terminal integrado do VS Code e execute <code>opencode</code>. A extensão instala automaticamente.</p>
+            <pre><code># No terminal integrado do VS Code:
+opencode</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Atalhos IDE</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Atalho</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>Cmd+Esc</code> (Mac) / <code>Ctrl+Esc</code></td><td>Abrir OpenCode em terminal dividido</td></tr>
+                <tr><td><code>Cmd+Shift+Esc</code> (Mac) / <code>Ctrl+Shift+Esc</code></td><td>Nova sessão OpenCode</td></tr>
+                <tr><td><code>Cmd+Option+K</code> (Mac) / <code>Alt+Ctrl+K</code></td><td>Inserir referência de arquivo (@File#L37-42)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Editor externo:</strong> Configure <code>EDITOR</code> para usar seu editor favorito com <code>/editor</code> e <code>/export</code>: <code>export EDITOR="code --wait"</code>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🌐 Web UI</h2>
+
+          <div class="card-tech">
+            <h3>Iniciar Interface Web</h3>
+            <pre><code>opencode web</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">Abre automaticamente no navegador. Suporta sessões, servidores e mais.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Configurações Web</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Flag</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>--port 4096</code></td><td>Porta específica</td></tr>
+                <tr><td><code>--hostname 0.0.0.0</code></td><td>Acessível na rede</td></tr>
+                <tr><td><code>--mdns</code></td><td>Descoberta mDNS (opencode.local)</td></tr>
+                <tr><td><code>--cors https://exemplo.com</code></td><td>Origens CORS adicionais</td></tr>
+                <tr><td><code>OPENCODE_SERVER_PASSWORD=secret</code></td><td>Autenticação básica</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-tech">
+            <h3>Attach TUI + Web</h3>
+            <p style="color: var(--text-secondary);">Use TUI e Web simultaneamente compartilhando o mesmo servidor:</p>
+            <pre><code># Terminal 1: servidor web
+opencode web --port 4096
+
+# Terminal 2: attach TUI
+opencode attach http://localhost:4096</code></pre>
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximo passo</h2>
+          <p style="color: var(--text-secondary);">Personalize o OpenCode com temas, comandos customizados e muito mais.</p>
+          <a href="personalizacao.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1rem;">
+            Personalização →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

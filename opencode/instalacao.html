@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Como instalar o OpenCode via script curl, npm, Homebrew, Docker, Windows, Arch Linux e mais">
+  <title>Instalação | OpenCode Tutorial</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+
+      <div class="content-wrapper">
+        <h1>📦 Instalação do OpenCode</h1>
+        <p class="lead" style="color: var(--text-secondary);">Escolha o método de instalação que melhor se adapta ao seu ambiente. O mais rápido é via script curl.</p>
+
+        <section class="mt-4">
+          <h2>🚀 Script curl (Recomendado)</h2>
+          <p>A forma mais simples e rápida. Funciona em macOS, Linux e Windows (via WSL).</p>
+
+          <div class="card-tech">
+            <pre><code>curl -fsSL https://opencode.ai/install | bash</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">✅ OpenCode instalado globalmente<br>
+            ✅ Comando <code>opencode</code> disponível no terminal</p>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Diretório de instalação:</strong> O script respeita a ordem: <code>$OPENCODE_INSTALL_DIR</code> → <code>$XDG_BIN_DIR</code> → <code>$HOME/bin</code> → <code>$HOME/.opencode/bin</code>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📦 Gerenciadores de Pacote</h2>
+
+          <div class="card-tech">
+            <h3>npm</h3>
+            <pre><code>npm install -g opencode-ai@latest</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Bun</h3>
+            <pre><code>bun install -g opencode-ai</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>pnpm</h3>
+            <pre><code>pnpm install -g opencode-ai</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Yarn</h3>
+            <pre><code>yarn global add opencode-ai</code></pre>
+          </div>
+
+          <div class="alert-warning">
+            <strong>⚠️ Importante:</strong> Remova versões anteriores a 0.1.x antes de instalar.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🍺 Homebrew (macOS e Linux)</h2>
+
+          <div class="card-tech">
+            <h3>Tap oficial (recomendado)</h3>
+            <pre><code>brew install anomalyco/tap/opencode</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">Sempre atualizado com os últimos releases.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Fórmula oficial do Homebrew</h3>
+            <pre><code>brew install opencode</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">Mantida pela equipe do Homebrew — atualizada com menos frequência.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Desktop App</h3>
+            <pre><code>brew install --cask opencode-desktop</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🪟 Windows</h2>
+
+          <div class="alert-info">
+            <strong>💡 Recomendado:</strong> Use WSL (Windows Subsystem for Linux) para melhor performance e compatibilidade total.
+          </div>
+
+          <div class="card-grid">
+            <div class="card-tech">
+              <h3>Chocolatey</h3>
+              <pre><code>choco install opencode</code></pre>
+            </div>
+            <div class="card-tech">
+              <h3>Scoop</h3>
+              <pre><code>scoop install opencode</code></pre>
+            </div>
+            <div class="card-tech">
+              <h3>npm direto</h3>
+              <pre><code>npm install -g opencode-ai</code></pre>
+            </div>
+            <div class="card-tech">
+              <h3>Mise</h3>
+              <pre><code>mise use -g github:anomalyco/opencode</code></pre>
+            </div>
+            <div class="card-tech">
+              <h3>Docker</h3>
+              <pre><code>docker run -it --rm ghcr.io/anomalyco/opencode</code></pre>
+            </div>
+            <div class="card-tech">
+              <h3>Scoop Desktop</h3>
+              <pre><code>scoop bucket add extras
+scoop install extras/opencode-desktop</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🐧 Linux (Arch Linux)</h2>
+
+          <div class="card-grid">
+            <div class="card-tech">
+              <h3>Estável (pacman)</h3>
+              <pre><code>sudo pacman -S opencode</code></pre>
+            </div>
+            <div class="card-tech">
+              <h3>Última versão (AUR)</h3>
+              <pre><code>paru -S opencode-bin</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>❄️ Nix</h2>
+
+          <div class="card-tech">
+            <pre><code>nix run nixpkgs#opencode
+# Ou para o branch dev mais recente:
+# github:anomalyco/opencode</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🖥️ Desktop App (BETA)</h2>
+          <p>OpenCode também está disponível como aplicação desktop construída com Tauri (Rust + Web).</p>
+
+          <div class="card-grid">
+            <div class="card-tech" style="text-align: center;">
+              <h3>macOS Apple Silicon</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;"><code>opencode-desktop-mac-arm64.dmg</code></p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h3>macOS Intel</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;"><code>opencode-desktop-mac-x64.dmg</code></p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h3>Windows</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;"><code>opencode-desktop-windows-x64.exe</code></p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h3>Linux</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;"><code>.deb</code>, <code>.rpm</code> ou <code>.AppImage</code></p>
+            </div>
+          </div>
+
+          <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="https://github.com/anomalyco/opencode/releases" target="_blank" class="text-orange">Baixar da página de releases →</a>
+          </p>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximo passo</h2>
+          <p style="color: var(--text-secondary);">Depois de instalar, configure seu primeiro provedor de IA e comece a usar.</p>
+          <a href="primeiros-passos.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1rem;">
+            Primeiros Passos →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

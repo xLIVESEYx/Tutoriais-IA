@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tutorial completo de OpenCode - O agente de IA open source para codificação. Instalação, configuração, agentes, providers e mais.">
+  <meta name="keywords" content="OpenCode, AI Coding Agent, open source, terminal, TUI, Claude Code, Cursor, tutorial">
+  <title>OpenCode Tutorial - Agente de IA Open Source para Codificação</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <section class="hero">
+        <div class="hero-content">
+          <h1>💻 OpenCode</h1>
+          <p class="lead">O agente de IA open source para codificação. Use qualquer modelo de qualquer provedor direto do seu terminal, IDE ou desktop.</p>
+
+          <div class="hero-badges">
+            <div class="badge-item">
+              <span class="number">187K</span> ⭐ GitHub Stars
+            </div>
+            <div class="badge-item">
+              <span class="number">900</span> Contribuidores
+            </div>
+            <div class="badge-item">
+              <span class="number">7.5M</span> Devs/mês
+            </div>
+            <div class="badge-item">
+              <span class="number">75+</span> Providers de IA
+            </div>
+          </div>
+
+          <div style="margin-top: 2.5rem;">
+            <a href="instalacao.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-right: 1rem;">
+              Começar Agora
+            </a>
+            <a href="https://github.com/anomalyco/opencode" target="_blank" class="btn btn-lg btn-outline-light" style="padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600;">
+              Ver no GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <div class="content-wrapper">
+        <section>
+          <h2>O que é o OpenCode?</h2>
+          <p>O <strong>OpenCode</strong> é um agente de IA open source (MIT) que ajuda você a escrever código no terminal, IDE ou desktop. Com mais de <strong>187.000 estrelas no GitHub</strong>, <strong>900 contribuidores</strong> e <strong>7,5 milhões de desenvolvedores mensais</strong>, é o agente de código aberto mais popular do mercado.</p>
+          <p>Construído pela equipe do <strong>Anomaly Innovations</strong> (mesma equipe por trás do SST), o OpenCode suporta <strong>75+ provedores de LLM</strong>, integração nativa com <strong>LSP</strong> para 40+ linguagens, <strong>multi-sessão</strong> em paralelo, <strong>compartilhamento</strong> de sessões e muito mais.</p>
+
+          <div class="alert-info">
+            <strong>💡 Por que usar o OpenCode?</strong><br>
+            Diferente de ferramentas proprietárias como Claude Code ou Cursor, o OpenCode é 100% open source, não prende você a um único provedor de IA, roda localmente sem armazenar seu código e funciona em qualquer editor.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🎯 Principais Benefícios</h2>
+          <div class="card-grid">
+            <div class="card-tech">
+              <h3>🔌 Provider-Agnóstico</h3>
+              <p>Use qualquer modelo de 75+ provedores: Claude, GPT, Gemini, Groq, DeepSeek, Ollama local e mais. Sem vendor lock-in.</p>
+            </div>
+
+            <div class="card-tech">
+              <h3>🏗️ Arquitetura Cliente/Servidor</h3>
+              <p>Servidor em Bun + Hono (TypeScript), cliente em Go (Bubble Tea). Sessões persistem independente do cliente. Conecte de qualquer dispositivo.</p>
+            </div>
+
+            <div class="card-tech">
+              <h3>🖥️ Multi-Plataforma</h3>
+              <p>TUI nativa no terminal, Desktop App (Tauri), Extensão VS Code/Cursor e Web UI. Escolha sua interface favorita.</p>
+            </div>
+
+            <div class="card-tech">
+              <h3>🧠 LSP Nativo</h3>
+              <p>40+ linguagens com diagnóstico em tempo real. O agente recebe erros do LSP e se corrige automaticamente sem intervenção humana.</p>
+            </div>
+
+            <div class="card-tech">
+              <h3>🤖 Sistema de Agentes</h3>
+              <p>Build (acesso total), Plan (read-only), Explore, Scout, General e agentes customizáveis com prompts e permissões próprias.</p>
+            </div>
+
+            <div class="card-tech">
+              <h3>🛡️ Privacidade Primeiro</h3>
+              <p>Nenhum código ou contexto é armazenado externamente. Tudo roda localmente. Suporte a fully offline com modelos locais.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔄 Como Funciona</h2>
+          <div class="card-tech">
+            <pre><code>┌─────────────┐
+│  Seu Cliente │  TUI, Desktop, Web, IDE
+│  (Go/Bubble) │
+└──────┬──────┘
+       │ HTTP/WebSocket
+       ↓
+┌─────────────────────────────────────────┐
+│        OpenCode Server (Bun + Hono)     │
+│  • LLM Router (75+ providers)           │
+│  • Session Manager (SQLite)            │
+│  • LSP Integration (40+ linguagens)     │
+│  • MCP Server Manager                   │
+│  • Plugin System (TypeScript)           │
+│  • Permission Engine                    │
+└──────┬──────────────────────────────────┘
+       │
+       ├─→ [Provider 1] Claude / GPT / Gemini
+       ├─→ [Provider 2] Groq / DeepSeek / xAI
+       ├─→ [Provider 3] Ollama / LM Studio (local)
+       └─→ [Provider N] 75+ opções disponíveis
+
+Resultado: Total liberdade de escolha + máximo controle</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📊 Estatísticas do Projeto</h2>
+          <div class="card-tech" style="text-align: center;">
+            <div class="card-grid">
+              <div>
+                <h3 style="color: var(--accent-orange); font-size: 2rem;">187K</h3>
+                <p style="color: var(--text-secondary);">⭐ GitHub Stars</p>
+              </div>
+              <div>
+                <h3 style="color: var(--accent-blue); font-size: 2rem;">23.6K</h3>
+                <p style="color: var(--text-secondary);">Forks</p>
+              </div>
+              <div>
+                <h3 style="color: var(--accent-orange); font-size: 2rem;">900</h3>
+                <p style="color: var(--text-secondary);">Contribuidores</p>
+              </div>
+              <div>
+                <h3 style="color: var(--accent-blue); font-size: 2rem;">15K</h3>
+                <p style="color: var(--text-secondary);">Commits</p>
+              </div>
+              <div>
+                <h3 style="color: var(--accent-orange); font-size: 2rem;">841</h3>
+                <p style="color: var(--text-secondary);">Releases</p>
+              </div>
+              <div>
+                <h3 style="color: var(--accent-blue); font-size: 2rem;">v1.18.3</h3>
+                <p style="color: var(--text-secondary);">Última versão</p>
+              </div>
+            </div>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">MIT License · Criado em 30 Abr 2025 · Branch principal: dev</p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🚀 Quickstart de 3 Passos</h2>
+          <div class="card-tech">
+            <h3>1. Instale o OpenCode</h3>
+            <pre><code>curl -fsSL https://opencode.ai/install | bash</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Ou via npm: <code>npm install -g opencode-ai</code></p>
+          </div>
+
+          <div class="card-tech">
+            <h3>2. Conecte um Provedor</h3>
+            <p style="color: var(--text-secondary);">Execute <code>opencode</code> e depois <code>/connect</code> no TUI. Selecione OpenAI, Anthropic, GitHub Copilot ou 75+ outros provedores.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>3. Comece a Codar</h3>
+            <pre><code>cd /path/to/seu/projeto
+opencode</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Execute <code>/init</code> para o OpenCode analisar seu projeto e criar um <code>AGENTS.md</code> personalizado.</p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📦 Distribuições</h2>
+          <p>O OpenCode está disponível em três formatos principais:</p>
+          <div class="card-grid">
+            <div class="card-tech" style="text-align: center;">
+              <h3>🖥️ Desktop App</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Tauri (Rust + Web). macOS, Windows, Linux. Tabs, notificações nativas.</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h3>⌨️ TUI Terminal</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Interface nativa no terminal. Bubble Tea (Go). Keyboard-first.</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h3>🔌 VS Code Extension</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Extensão oficial para VS Code, Cursor, Windsurf, VSCodium.</p>
+            </div>
+          </div>
+          <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="instalacao.html" class="text-orange">Ver guia completo de instalação →</a>
+          </p>
+        </section>
+
+        <section class="mt-4">
+          <h2>🤖 Agentes Compatíveis</h2>
+          <p>O OpenCode é compatível com 75+ provedores:</p>
+          <div class="card-grid">
+            <div class="card-tech" style="text-align: center;">
+              <h4>OpenAI</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">GPT-5, GPT-5.1 Codex, o4, o3</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>Anthropic</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Claude Opus 4.8, Sonnet 4.5, Haiku 4.5</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>Google</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Gemini 3.5 Flash, 3.1 Pro</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>GitHub Copilot</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Use sua assinatura Copilot</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>DeepSeek</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">V4 Pro, V4 Flash</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>Groq / xAI / Mistral</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Inferência rápida + modelos abertos</p>
+            </div>
+          </div>
+          <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="providers.html" class="text-orange">Ver lista completa de provedores →</a>
+          </p>
+        </section>
+
+        <section class="faq-section">
+          <h2>❓ Perguntas Frequentes</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  O OpenCode é realmente gratuito?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim! O OpenCode é 100% open-source (MIT license). Você pode usar gratuitamente para sempre. Você só paga pelos tokens de IA dos provedores que escolher usar. O OpenCode Zen é um serviço opcional pago, mas o core é completamente gratuito.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Preciso de conhecimento técnico para usar?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim, é uma ferramenta de terminal voltada para desenvolvedores. Se você já usa terminal e git, vai conseguir configurar o OpenCode em minutos. A instalação é simples com um comando curl.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Meus dados ficam seguros?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim. O OpenCode roda 100% localmente. Nenhum código ou contexto é armazenado em servidores externos. As credenciais de API ficam criptografadas localmente. Você pode até rodar modelos locais (Ollama/LM Studio) para operação fully offline.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  Qual a diferença entre Build e Plan?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  O Build Agent tem acesso total a todas as ferramentas (ler, escrever, editar, executar comandos). O Plan Agent é read-only: ele pode analisar e sugerir mudanças, mas toda edição ou comando precisa de sua aprovação explícita. Você alterna entre eles com a tecla Tab.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                  Quais provedores de IA são suportados?
+                </button>
+              </h2>
+              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  75+ provedores, incluindo: OpenAI, Anthropic, Google Gemini, GitHub Copilot, GitLab Duo, AWS Bedrock, Azure OpenAI, DeepSeek, Groq, xAI (Grok), Mistral, Together AI, Fireworks AI, Ollama (local), LM Studio (local), e muitos mais. Veja a lista completa na página <a href="providers.html" class="text-orange">Provedores</a>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 3rem 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Pronto para Começar?</h2>
+          <p style="color: var(--text-secondary); max-width: 600px; margin: 1rem auto;">Instale o OpenCode em segundos e descubra o poder de um agente de IA open source, privado e com total liberdade de escolha.</p>
+          <a href="instalacao.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1.5rem;">
+            Ver Guia de Instalação →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OpenCode Enterprise - SSO, config centralizada, compliance, governança e deploy organizacional">
+  <title>Enterprise | OpenCode Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      <div class="content-wrapper">
+        <h1>🏢 Enterprise</h1>
+        <p class="lead" style="color: var(--text-secondary);">Use o OpenCode de forma segura e escalável em ambientes organizacionais. Privacidade, SSO e governança.</p>
+
+        <section class="mt-4">
+          <h2>🔒 Privacidade Primeiro</h2>
+          <div class="alert-success">
+            <strong>🛡️ Garantia:</strong> O OpenCode <strong>não armazena nenhum código ou contexto</strong>. Toda indexação, diagnósticos e contexto de inferência LLM permanecem locais ao seu ambiente.
+          </div>
+
+          <div class="card-tech">
+            <h3>Proteção da Feature Share</h3>
+            <pre><code>{
+  "share": "disabled"
+}</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">Desabilite compartilhamento em sensitive projects. Pode ser configurado por projeto e versionado no Git.</p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚙️ Deploy Empresarial</h2>
+
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>Config Centralizada</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Config compartilhada para toda a organização com todos os usuários usando o mesmo setup.</p>
+            </div>
+            <div class="card-tech">
+              <h4>SSO Integration</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Integra com Okta, Azure AD, Google Workspace para autenticação.</p>
+            </div>
+            <div class="card-tech">
+              <h4>AI Gateway Interno</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Roteie todo tráfego por gateway interno. Desabilite provedores externos.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Self-Hosting</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Compartilhe na sua própria infraestrutura se necessário.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🏛️ Políticas e Governança</h2>
+
+          <div class="card-tech">
+            <h3>Desabilitar Provedores</h3>
+            <pre><code>{
+  "disabled_providers": ["openai", "gemini"]
+}</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Políticas de Uso (Experimental)</h3>
+            <pre><code>{
+  "experimental": {
+    "policies": [
+      {
+        "effect": "deny",
+        "action": "provider.use",
+        "resource": "openai"
+      }
+    ]
+  }
+}</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Permissões Granulares por Projeto</h3>
+            <pre><code>{
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "git push *": "deny",
+      "rm *": "deny"
+    },
+    "edit": "ask"
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📋 Managed Settings (MDM)</h2>
+
+          <div class="card-tech">
+            <p style="color: var(--text-secondary);">Force configurações que os usuários não podem sobrescrever:</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Plataforma</th>
+                  <th>Caminho</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>macOS</td><td><code>/Library/Application Support/opencode/</code></td></tr>
+                <tr><td>Linux</td><td><code>/etc/opencode/</code></td></tr>
+                <tr><td>Windows</td><td><code>%ProgramData%\opencode</code></td></tr>
+                <tr><td>macOS MDM</td><td><code>.mobileconfig</code> via Jamf/FleetDM</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🌐 Network</h2>
+
+          <div class="card-tech">
+            <h3>Proxy</h3>
+            <pre><code>export HTTPS_PROXY=https://proxy.empresa.com:8080
+export NO_PROXY=localhost,127.0.0.1</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Certificados Custom</h3>
+            <pre><code>export NODE_EXTRA_CA_CERTS=/path/to/ca-cert.pem</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>💰 Preço Enterprise</h2>
+          <div class="card-tech">
+            <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li><strong>Modelo:</strong> Por seat (por usuário)</li>
+              <li><strong>Gateway próprio:</strong> Sem cobrança por tokens</li>
+              <li><strong>Suporte:</strong> Contato em <a href="https://opencode.ai/enterprise" target="_blank" class="text-orange">opencode.ai/enterprise</a></li>
+            </ul>
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximo passo</h2>
+          <p style="color: var(--text-secondary);">Conheça a comunidade, ecossistema de plugins e projetos construídos com OpenCode.</p>
+          <a href="comunidade.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1rem;">
+            Ecossistema →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

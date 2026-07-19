@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guia de modelos e preços do OpenCode - Modelos recomendados, tabela de preços Zen, variantes e configuração">
+  <title>Modelos e Preços | OpenCode Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      <div class="content-wrapper">
+        <h1>🧠 Modelos e Preços</h1>
+        <p class="lead" style="color: var(--text-secondary);">Conheça os modelos recomendados, a tabela de preços do OpenCode Zen e como configurar variantes.</p>
+
+        <section class="mt-4">
+          <h2>⭐ Modelos Recomendados</h2>
+          <p>Estes modelos funcionam excepcionalmente bem com o OpenCode para coding agents:</p>
+
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>GPT 5.6 Sol</h4>
+              <p style="color: var(--text-secondary);">R$5/1M input · R$30/1M output</p>
+              <p style="font-size: 0.9rem;">Máximo desempenho para tarefas complexas</p>
+            </div>
+            <div class="card-tech">
+              <h4>Claude Sonnet 4.5</h4>
+              <p style="color: var(--text-secondary);">R$3/1M input · R$15/1M output</p>
+              <p style="font-size: 0.9rem;">Excelente equilíbrio custo-benefício</p>
+            </div>
+            <div class="card-tech">
+              <h4>Claude Opus 4.8</h4>
+              <p style="color: var(--text-secondary);">R$5/1M input · R$25/1M output</p>
+              <p style="font-size: 0.9rem;">Máxima capacidade de raciocínio</p>
+            </div>
+            <div class="card-tech">
+              <h4>Gemini 3.5 Flash</h4>
+              <p style="color: var(--text-secondary);">R$1.50/1M input · R$9/1M output</p>
+              <p style="font-size: 0.9rem;">Rápido e econômico</p>
+            </div>
+            <div class="card-tech">
+              <h4>Qwen 3.7 Plus</h4>
+              <p style="color: var(--text-secondary);">R$0.40/1M input · R$1.60/1M output</p>
+              <p style="font-size: 0.9rem;">Custo muito baixo, boa Performance</p>
+            </div>
+            <div class="card-tech">
+              <h4>DeepSeek V4 Flash</h4>
+              <p style="color: var(--text-secondary);">R$0.14/1M input · R$0.28/1M output</p>
+              <p style="font-size: 0.9rem;">Extremamente barato</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🆓 Modelos Gratuitos</h2>
+          <div class="alert-success">
+            <strong>🎉 Grátis para usar:</strong> DeepSeek V4 Flash Free, MiMo-V2.5 Free, North Mini Code Free, Nemotron 3 Ultra Free, Big Pickle.
+          </div>
+          <p style="color: var(--text-secondary);">Disponíveis por tempo limitado para coleta de feedback.</p>
+        </section>
+
+        <section class="mt-4">
+          <h2>📊 Tabela de Preços Zen</h2>
+          <p>Preços por 1 milhão de tokens (USD). Cached Read tem 80% de desconto sobre o input.</p>
+
+          <div class="card-tech" style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Modelo</th>
+                  <th>Input</th>
+                  <th>Output</th>
+                  <th>Cached Read</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>GPT 5.6 Sol</strong></td><td>$5.00</td><td>$30.00</td><td>$0.50</td></tr>
+                <tr><td>GPT 5.6 Terra</td><td>$2.50</td><td>$15.00</td><td>$0.25</td></tr>
+                <tr><td>GPT 5.6 Luna</td><td>$1.00</td><td>$6.00</td><td>$0.10</td></tr>
+                <tr><td><strong>Claude Opus 4.8</strong></td><td>$5.00</td><td>$25.00</td><td>$0.50</td></tr>
+                <tr><td><strong>Claude Sonnet 4.5</strong></td><td>$3.00</td><td>$15.00</td><td>$0.30</td></tr>
+                <tr><td>Claude Haiku 4.5</td><td>$1.00</td><td>$5.00</td><td>$0.10</td></tr>
+                <tr><td><strong>Gemini 3.5 Flash</strong></td><td>$1.50</td><td>$9.00</td><td>$0.15</td></tr>
+                <tr><td>Gemini 3.1 Pro</td><td>$2.00</td><td>$12.00</td><td>$0.20</td></tr>
+                <tr><td><strong>Qwen 3.7 Max</strong></td><td>$2.50</td><td>$7.50</td><td>$0.50</td></tr>
+                <tr><td>Qwen 3.7 Plus</td><td>$0.40</td><td>$1.60</td><td>$0.04</td></tr>
+                <tr><td><strong>DeepSeek V4 Pro</strong></td><td>$1.74</td><td>$3.48</td><td>$0.145</td></tr>
+                <tr><td>DeepSeek V4 Flash</td><td>$0.14</td><td>$0.28</td><td>$0.028</td></tr>
+                <tr><td><strong>Kimi K2.7 Code</strong></td><td>$0.95</td><td>$4.00</td><td>$0.19</td></tr>
+                <tr><td><strong>GLM 5.2</strong></td><td>$1.40</td><td>$4.40</td><td>$0.26</td></tr>
+                <tr><td><strong>Grok 4.5</strong></td><td>$2.00</td><td>$6.00</td><td>$0.30</td></tr>
+                <tr><td>GPT 5.1 Codex</td><td>$1.07</td><td>$8.50</td><td>$0.107</td></tr>
+                <tr><td>MiniMax M3</td><td>$0.30</td><td>$1.20</td><td>$0.06</td></tr>
+                <tr><td>GPT 5 Nano</td><td>$0.05</td><td>$0.40</td><td>$0.005</td></tr>
+                <tr><td><span class="text-green">DeepSeek V4 Flash Free</span></td><td class="text-green">Grátis</td><td class="text-green">Grátis</td><td>—</td></tr>
+                <tr><td><span class="text-green">Nemotron 3 Ultra Free</span></td><td class="text-green">Grátis</td><td class="text-green">Grátis</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚙️ Configuração de Modelos</h2>
+
+          <div class="card-tech">
+            <h3>Modelo Padrão</h3>
+            <pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/gpt-5.1-codex",
+  "small_model": "opencode/gpt-5-nano"
+}</code></pre>
+            <p style="color: var(--text-secondary);">O <code>small_model</code> é usado para tarefas leves como geração de títulos.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Variantes de Pensamento</h3>
+            <p style="color: var(--text-secondary);">Configure variantes para alternar entre diferentes níveis de raciocínio com <code>Ctrl+T</code>:</p>
+            <pre><code>{
+  "provider": {
+    "opencode": {
+      "models": {
+        "gpt-5": {
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low"
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Timeout e Cache</h3>
+            <pre><code>{
+  "provider": {
+    "anthropic": {
+      "options": {
+        "timeout": 600000,
+        "chunkTimeout": 30000,
+        "setCacheKey": true
+      }
+    }
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔄 Modelos Locais</h2>
+          <p>Configure modelos locais para operação offline:</p>
+
+          <div class="card-tech">
+            <h4>Ollama</h4>
+            <pre><code>{
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": { "baseURL": "http://localhost:11434/v1" },
+      "models": {
+        "llama2": { "name": "Llama 2" }
+      }
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Dica:</strong> Aumente <code>num_ctx</code> no Ollama para 16k-32k se tool calls não estiverem funcionando bem.
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximo passo</h2>
+          <p style="color: var(--text-secondary);">Entenda como as ferramentas e permissões funcionam no OpenCode.</p>
+          <a href="ferramentas.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1rem;">
+            Ferramentas e Permissões →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

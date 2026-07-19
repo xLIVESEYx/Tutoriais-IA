@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personalização do OpenCode - Temas, configuração opencode.json, AGENTS.md, regras customizadas e comandos">
+  <title>Personalização | OpenCode Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      <div class="content-wrapper">
+        <h1>🎨 Personalização</h1>
+        <p class="lead" style="color: var(--text-secondary);">Customize cada aspecto do OpenCode: temas, configurações, regras, comandos e atalhos.</p>
+
+        <section class="mt-4">
+          <h2>📁 Onde Fica o Config</h2>
+          <p>Ordem de precedência (último vence):</p>
+          <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+            <li><strong>Remote</strong> — <code>.well-known/opencode</code> (organizacional)</li>
+            <li><strong>Global</strong> — <code>~/.config/opencode/opencode.json</code></li>
+            <li><strong>Custom</strong> — <code>$OPENCODE_CONFIG</code></li>
+            <li><strong>Projeto</strong> — <code>opencode.json</code> na raiz do projeto</li>
+            <li><strong>.opencode/</strong> — Diretório local de configuração</li>
+            <li><strong>Inline</strong> — <code>$OPENCODE_CONFIG_CONTENT</code></li>
+            <li><strong>Managed</strong> — <code>/Library/Application Support/opencode/</code> (admin)</li>
+          </ol>
+          <p style="margin-top: 0.5rem;">Configurações são <strong>mescladas</strong>, não substituídas.</p>
+        </section>
+
+        <section class="mt-4">
+          <h2>📄 Formato opencode.json</h2>
+
+          <div class="card-tech">
+            <pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-5",
+  "autoupdate": true,
+  "server": {
+    "port": 4096
+  },
+  "shell": "pwsh",
+  "share": "manual",
+  "snapshot": true
+}</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Schema Completo</h3>
+            <p style="color: var(--text-secondary);">Use o schema para autocomplete no seu editor:</p>
+            <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li><code>https://opencode.ai/config.json</code> — Server/runtime config</li>
+              <li><code>https://opencode.ai/tui.json</code> — TUI-specific config</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🎭 Temas</h2>
+
+          <div class="card-tech">
+            <h3>Temas Built-in</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>system</code></td><td>Adapta-se ao tema do terminal</td></tr>
+                <tr><td><code>tokyonight</code></td><td>Baseado no Tokyonight</td></tr>
+                <tr><td><code>catppuccin</code></td><td>Baseado no Catppuccin</td></tr>
+                <tr><td><code>gruvbox</code></td><td>Baseado no Gruvbox</td></tr>
+                <tr><td><code>nord</code></td><td>Baseado no Nord</td></tr>
+                <tr><td><code>everforest</code></td><td>Baseado no Everforest</td></tr>
+                <tr><td><code>kanagawa</code></td><td>Baseado no Kanagawa</td></tr>
+                <tr><td><code>matrix</code></td><td>Verde hacker</td></tr>
+                <tr><td><code>one-dark</code></td><td>Atom One Dark</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-tech">
+            <h3>Criar Tema Customizado</h3>
+            <p style="color: var(--text-secondary);">Crie um JSON em <code>~/.config/opencode/themes/</code> ou <code>.opencode/themes/</code>:</p>
+            <pre><code>{
+  "$schema": "https://opencode.ai/theme.json",
+  "theme": {
+    "primary": { "dark": "#f97316", "light": "#ea580c" },
+    "background": { "dark": "#0d1117", "light": "#ffffff" },
+    "text": { "dark": "#f0f6fc", "light": "#1f2937" }
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📝 Regras (AGENTS.md)</h2>
+
+          <div class="card-tech">
+            <h3>Regras de Projeto</h3>
+            <p style="color: var(--text-secondary);">Crie <code>AGENTS.md</code> na raiz do projeto com instruções específicas:</p>
+            <pre><code># Meu Projeto
+Este é um monorepo SST v3 com TypeScript.
+
+## Estrutura
+- `packages/` - Workspaces (functions, core, web)
+- `infra/` - Definições de infraestrutura
+
+## Comandos
+- Build: `npm run build`
+- Test: `npm run test`
+- Lint: `npm run lint`
+
+## Convenções
+- Use TypeScript strict mode
+- Código compartilhado em `packages/core/`</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Regras Globais</h3>
+            <p><code>~/.config/opencode/AGENTS.md</code> — aplicado em todos os projetos.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Custom Instructions</h3>
+            <p style="color: var(--text-secondary);">Referencie arquivos de regras existentes:</p>
+            <pre><code>{
+  "instructions": [
+    "CONTRIBUTING.md",
+    "docs/guidelines.md",
+    ".cursor/rules/*.md"
+  ]
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⌨️ Comandos Customizados</h2>
+
+          <div class="card-tech">
+            <p style="color: var(--text-secondary);">Defina comandos reutilizáveis como templates:</p>
+            <pre><code>{
+  "command": {
+    "test": {
+      "template": "Execute o suite de testes completo e mostre falhas.",
+      "description": "Rodar testes com cobertura",
+      "agent": "build",
+      "model": "anthropic/claude-haiku-4-5"
+    }
+  }
+}</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">Ou use Markdown em <code>.opencode/commands/test.md</code>.</p>
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximo passo</h2>
+          <p style="color: var(--text-secondary);">Explore recursos avançados: LSP, MCP, plugins, SDK e muito mais.</p>
+          <a href="recursos-avancados.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1rem;">
+            Recursos Avançados →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

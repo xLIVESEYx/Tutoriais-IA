@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ferramentas e sistema de permissões do OpenCode - 13 tools built-in, allow/ask/deny, granular control">
+  <title>Tools e Permissões | OpenCode Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      <div class="content-wrapper">
+        <h1>🛠️ Tools e Permissões</h1>
+        <p class="lead" style="color: var(--text-secondary);">Controle granular sobre quais ações o LLM pode executar. Permissões allow, ask ou deny para cada ferramenta.</p>
+
+        <section class="mt-4">
+          <h2>🔧 Ferramentas Built-in (13)</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Tool</th>
+                <th>Descrição</th>
+                <th>Permissão padrão</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>bash</code></td><td>Executar comandos shell</td><td>allow</td></tr>
+              <tr><td><code>edit</code></td><td>Modificar arquivos existentes (replacement)</td><td>allow</td></tr>
+              <tr><td><code>write</code></td><td>Criar novos arquivos ou sobrescrever</td><td>allow (controlado por edit)</td></tr>
+              <tr><td><code>read</code></td><td>Ler conteúdo de arquivos</td><td>allow (.env negado)</td></tr>
+              <tr><td><code>grep</code></td><td>Buscar conteúdo com regex</td><td>allow</td></tr>
+              <tr><td><code>glob</code></td><td>Buscar arquivos por padrão</td><td>allow</td></tr>
+              <tr><td><code>apply_patch</code></td><td>Aplicar patches/diffs</td><td>allow (controlado por edit)</td></tr>
+              <tr><td><code>webfetch</code></td><td>Buscar conteúdo web</td><td>allow</td></tr>
+              <tr><td><code>websearch</code></td><td>Pesquisar na web (Exa AI)</td><td>allow (requer OpenCode provider)</td></tr>
+              <tr><td><code>skill</code></td><td>Carregar SKILL.md sob demanda</td><td>allow</td></tr>
+              <tr><td><code>todowrite</code></td><td>Gerenciar lista de tarefas</td><td>allow</td></tr>
+              <tr><td><code>question</code></td><td>Perguntar ao usuário</td><td>allow</td></tr>
+              <tr><td><code>lsp</code></td><td>Consultar LSP (experimental)</td><td>allow (experimental)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔐 Sistema de Permissões</h2>
+          <p>Cada permissão pode ser configurada como:</p>
+          <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+            <li><code>"allow"</code> — Executa sem aprovação</li>
+            <li><code>"ask"</code> — Pergunta antes de executar</li>
+            <li><code>"deny"</code> — Bloqueia a ação</li>
+          </ul>
+
+          <div class="card-tech">
+            <h3>Configuração Global</h3>
+            <pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "*": "ask",
+    "bash": "allow",
+    "edit": "deny"
+  }
+}</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Regras Granulares (Object Syntax)</h3>
+            <p style="color: var(--text-secondary);">Controle preciso com glob patterns. A última regra correspondente vence:</p>
+            <pre><code>{
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "git *": "allow",
+      "npm *": "allow",
+      "rm *": "deny",
+      "grep *": "allow"
+    },
+    "edit": {
+      "*": "deny",
+      "packages/web/src/content/docs/*.mdx": "allow"
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Diretórios Externos</h3>
+            <p style="color: var(--text-secondary);">Permita acesso a arquivos fora do diretório do projeto:</p>
+            <pre><code>{
+  "permission": {
+    "external_directory": {
+      "~/projects/personal/**": "allow"
+    },
+    "edit": {
+      "~/projects/personal/**": "deny"
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Proteção .env (padrão)</h3>
+            <pre><code>{
+  "permission": {
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow"
+    }
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🤖 Auto Mode</h2>
+          <p>Use <code>--auto</code> para aprovar automaticamente permissões que não são explicitamente negadas:</p>
+
+          <div class="card-tech">
+            <pre><code>opencode --auto
+opencode run --auto "Refatore este módulo"</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">No TUI, abra a paleta de comandos e selecione "Enable auto-approve permissions".</p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🛡️ Proteções de Segurança</h2>
+
+          <div class="card-tech">
+            <h3>Doom Loop</h3>
+            <p style="color: var(--text-secondary);">Quando a mesma tool call se repete 3 vezes com input idêntico, o OpenCode solicita aprovação. Padrão: <code>ask</code>.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Políticas (Experimental)</h3>
+            <p style="color: var(--text-secondary);">Controle quais provedores podem ser usados:</p>
+            <pre><code>{
+  "experimental": {
+    "policies": [
+      {
+        "effect": "deny",
+        "action": "provider.use",
+        "resource": "openai"
+      }
+    ]
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔧 Custom Tools</h2>
+          <p>Crie suas próprias ferramentas usando TypeScript:</p>
+
+          <div class="card-tech">
+            <pre><code>// .opencode/plugins/custom-tools.ts
+import { tool } from "@opencode-ai/plugin"
+
+export const CustomToolsPlugin = async (ctx) => {
+  return {
+    tool: {
+      saudacao: tool({
+        description: "Uma ferramenta customizada",
+        args: {
+          nome: tool.schema.string(),
+        },
+        async execute(args, context) {
+          return `Olá, ${args.nome}!`
+        }
+      })
+    }
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximo passo</h2>
+          <p style="color: var(--text-secondary);">Descubra o sistema de agentes do OpenCode: Build, Plan, subagentes e agentes customizados.</p>
+          <a href="agentes.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1rem;">
+            Sistema de Agentes →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Integração do OpenCode com GitHub Actions - Automação de issues, PRs, code review e CI/CD">
+  <title>GitHub Actions | OpenCode Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      <div class="content-wrapper">
+        <h1>🐙 Integração com GitHub Actions</h1>
+        <p class="lead" style="color: var(--text-secondary);">Automatize code review, triagem de issues e implementação de features diretamente do GitHub.</p>
+
+        <section class="mt-4">
+          <h2>📋 Como Funciona</h2>
+          <p>Mencione <code>/opencode</code> ou <code>/oc</code> em comentários de issues ou PRs, e o OpenCode executa tarefas no GitHub Actions runner.</p>
+
+          <div class="card-grid">
+            <div class="card-tech" style="text-align: center;">
+              <h4>🐛 Explicar Issue</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">"<code>/opencode explique esta issue</code>" → OpenCode lê o thread e explica</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>🔧 Corrigir Issue</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">"<code>/opencode corrija isto</code>" → Cria branch, implementa e abre PR</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>👀 Revisar PR</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">"<code>/oc faça alterações aqui</code>" → Comita mudanças no PR</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h4>📝 Revisar Linhas</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Comente em linhas específicas na aba Files</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🚀 Instalação Rápida</h2>
+
+          <div class="card-tech">
+            <pre><code>opencode github install</code></pre>
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">O comando guia você pela instalação do GitHub App, criação do workflow e configuração de secrets.</p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚙️ Instalação Manual</h2>
+
+          <div class="card-tech">
+            <h3>1. Instale o GitHub App</h3>
+            <p>Acesse <a href="https://github.com/apps/opencode-agent" target="_blank" class="text-orange">github.com/apps/opencode-agent</a> e instale no repositório alvo.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>2. Workflow YAML</h3>
+            <p style="color: var(--text-secondary);">Adicione em <code>.github/workflows/opencode.yml</code>:</p>
+            <pre><code>name: opencode
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  opencode:
+    if: |
+      contains(github.event.comment.body, '/oc') ||
+      contains(github.event.comment.body, '/opencode')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: anomalyco/opencode/github@latest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        with:
+          model: anthropic/claude-sonnet-4-20250514</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>3. Secrets</h3>
+            <p style="color: var(--text-secondary);">Adicione a API key do seu provedor em Settings → Secrets and variables → Actions.</p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📅 Eventos Suportados</h2>
+
+          <div class="card-tech">
+            <table>
+              <thead>
+                <tr>
+                  <th>Evento</th>
+                  <th>Disparo</th>
+                  <th>Exemplo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>issue_comment</code></td><td>Comentário em issue ou PR</td><td><code>/oc implemente isto</code></td></tr>
+                <tr><td><code>pull_request_review_comment</code></td><td>Comentário em linhas de código</td><td>Revisão com contexto de diff</td></tr>
+                <tr><td><code>issues</code></td><td>Issue aberta ou editada</td><td>Triagem automática</td></tr>
+                <tr><td><code>pull_request</code></td><td>PR aberto ou atualizado</td><td>Code review automático</td></tr>
+                <tr><td><code>schedule</code></td><td>Cron (agendado)</td><td>Tarefas periódicas</td></tr>
+                <tr><td><code>workflow_dispatch</code></td><td>Manual</td><td>Trigger via Actions tab</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📝 Exemplos de Workflow</h2>
+
+          <div class="card-tech">
+            <h3>Code Review Automático</h3>
+            <pre><code>name: opencode-review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: anomalyco/opencode/github@latest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        with:
+          model: anthropic/claude-sonnet-4-20250514
+          prompt: |
+            Review este PR:
+            - Verifique qualidade do código
+            - Busque potenciais bugs
+            - Sugira melhorias</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Triagem de Issues (com filtro anti-spam)</h3>
+            <pre><code>name: Issue Triage
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      issues: write
+    steps:
+      - name: Check account age
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const user = await github.rest.users.getByUsername({
+              username: context.payload.issue.user.login
+            });
+            const days = (Date.now() - new Date(user.data.created_at)) / 86400000;
+            return days >= 30;
+          result-encoding: string
+
+      - uses: actions/checkout@v6
+        if: steps.check.outputs.result == 'true'
+      - uses: anomalyco/opencode/github@latest
+        if: steps.check.outputs.result == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        with:
+          model: anthropic/claude-sonnet-4-20250514
+          prompt: |
+            Revise esta issue. Se houver solução clara:
+            - Forneça links de documentação
+            - Adicione orientação de tratamento de erros
+            Caso contrário, não comente.</code></pre>
+          </div>
+        </section>
+
+        <section style="text-align: center; margin-top: 4rem; padding: 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
+          <h2>Próximo passo</h2>
+          <p style="color: var(--text-secondary);">Saiba como usar o OpenCode em ambientes empresariais com SSO, governança e compliance.</p>
+          <a href="enterprise.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-orange); margin-top: 1rem;">
+            Enterprise →
+          </a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
