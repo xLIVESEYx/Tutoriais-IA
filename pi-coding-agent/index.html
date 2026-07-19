@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi Coding Agent - Tutorial em Português</title>
+    <meta name="description" content="Tutorial em português sobre o Pi Coding Agent (@earendil-works/pi-coding-agent) — um harness minimalista de codificação para terminal. Aprenda instalação, ferramentas, modos, providers, segurança, SDK e mais.">
+    <meta name="author" content="Site tutorial sobre pi">
+    <meta name="keywords" content="Pi, Coding Agent, pi.dev, CLI, terminal, tutorial, português, AI coding agent">
+    <meta name="theme-color" content="#0d1117">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Pi Coding Agent - Tutorial em Português">
+    <meta property="og:description" content="Harness minimalista de codificação para terminal. Tutorial completo em português.">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:url" content="https://pi.dev">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pi Coding Agent - Tutorial em Português">
+    <meta name="twitter:description" content="Harness minimalista de codificação para terminal. Tutorial completo em português.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://pi.dev/logo-auto.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="https://pi.dev/logo-auto.svg">
+
+    <!-- Preconnect to pi.dev for faster logo load -->
+    <link rel="preconnect" href="https://pi.dev" crossorigin>
+    <link rel="dns-prefetch" href="https://pi.dev">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Apply saved theme before first paint to avoid FOUC -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('pi-theme') || 'dark';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="https://pi.dev">
+                <img src="https://pi.dev/logo-auto.svg" alt="Pi Logo" class="logo">
+            </a>
+        </div>
+        <h1>Pi Coding Agent</h1>
+        <p class="subtitle">@earendil-works/pi-coding-agent - Um harness de codificação terminal minimalista</p>
+        <nav class="main-nav">
+            <a href="#visao-geral">Visão Geral</a>
+            <a href="#filosofia">Filosofia</a>
+            <a href="#quick-start">Quick Start</a>
+            <a href="#ferramentas">Ferramentas</a>
+            <a href="#modos">Modos</a>
+            <a href="#providers">Providers</a>
+            <a href="#sessions">Sessions</a>
+            <a href="#context-files">Context Files</a>
+            <a href="#customization">Customization</a>
+            <a href="#security">Security</a>
+            <a href="#ux">UX & Shortcuts</a>
+            <a href="#privacy">Privacy</a>
+            <a href="#sdk">SDK & RPC</a>
+        </nav>
+        <div class="external-links">
+            <a href="https://pi.dev" target="_blank">pi.dev</a>
+            <a href="https://discord.com/invite/3cU7Bz4UPx" target="_blank">Discord</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="visao-geral">
+            <h2>Visão Geral</h2>
+            <p>Pi é um minimal terminal coding harness. Adapte pi aos seus fluxos de trabalho, não o contrário, sem ter que forkar e modificar pi internals. Estenda-o com TypeScript <a href="#customization">Extensions</a>, <a href="#customization">Skills</a>, <a href="#customization">Prompt Templates</a>, e <a href="#customization">Themes</a>. Coloque suas extensões, skills, prompt templates e temas em <a href="#customization">Pi Packages</a> e compartilhe-os com outros via npm ou git.</p>
+            <p>Pi embarca poderosos padrões, mas pula features como sub agents e plan mode. Em vez disso, você pode pedir para pi construir o que quiser ou instalar um terceiro pi package que corresponda ao seu fluxo de trabalho.</p>
+            <p>Pi roda em quatro modos: interativo, print ou JSON, RPC para integração de processo, e um SDK para embutir em suas próprias apps. Veja <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">openclaw/openclaw</a> para uma integração de SDK em mundo real.</p>
+        </section>
+
+        <section id="filosofia">
+            <h2>Filosofia</h2>
+            <p>Pi é agressivamente extensível para não ditar o seu fluxo de trabalho. Features que outras ferramentas embarcam podem ser construídas com <a href="#customization">extensions</a>, <a href="#customization">skills</a>, ou instaladas de terceiros <a href="#customization">pi packages</a>. Isso mantém o core minimal enquanto te deixa moldar pi para combinar como você trabalha.</p>
+
+            <h3>Declarações Filosóficas</h3>
+            <div class="philosophy-grid">
+                <div class="philosophy-item">
+                    <h4>No MCP</h4>
+                    <p>Construa tools CLI com READMEs (veja <a href="#customization">Skills</a>), ou construa uma extensão que adicione suporte MCP. <a href="https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/" target="_blank" rel="noopener">Por que?</a></p>
+                </div>
+                <div class="philosophy-item">
+                    <h4>No sub-agents</h4>
+                    <p>Existem muitas maneiras de fazer isso. Spawne instâncias de pi via tmux, construa suas próprias com <a href="#customization">extensions</a>, ou instale um package que faça isso do seu jeito.</p>
+                </div>
+                <div class="philosophy-item">
+                    <h4>No permission popups</h4>
+                    <p>Execute em um container, ou construa o seu próprio fluxo de confirmação com <a href="#customization">extensions</a> inline com o seu ambiente e requisitos de segurança.</p>
+                </div>
+                <div class="philosophy-item">
+                    <h4>No plan mode</h4>
+                    <p>Escreva planos em arquivos, construa com <a href="#customization">extensions</a>, ou instale um package.</p>
+                </div>
+                <div class="philosophy-item">
+                    <h4>No built-in to-dos</h4>
+                    <p>Eles confundem modelos. Use um arquivo TODO.md, ou construa o seu com <a href="#customization">extensions</a>.</p>
+                </div>
+                <div class="philosophy-item">
+                    <h4>No background bash</h4>
+                    <p>Use tmux. Full observability, interação direta.</p>
+                </div>
+            </div>
+
+            <p>Leia o <a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/">blog post</a> para a rationale completa.</p>
+        </section>
+
+        <section id="quick-start">
+            <h2>Quick Start</h2>
+
+            <h3>Instalar</h3>
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code>npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+
+# --ignore-scripts desabilita dependency lifecycle scripts durante install.
+# Pi não requer install scripts para npm install normal.
+
+# Installer alternativa:
+
+curl -fsSL https://pi.dev/install.sh | sh</code></pre>
+            </div>
+
+            <h3>Autenticar</h3>
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code>export ANTHROPIC_API_KEY=sk-ant-...
+pi
+
+# Ou use sua existing subscription:
+
+pi /login  # Então selecione o provider</code></pre>
+            </div>
+
+            <p>Então apenas converse com pi. Por padrão, pi dá ao modelo quatro tools: <code>read</code>, <code>write</code>, <code>edit</code>, and <code>bash</code>. O modelo usa estas para cumprir seus pedidos. Adicione capabilities via <a href="#customization">skills</a>, <a href="#customization">prompt templates</a>, <a href="#customization">extensions</a>, ou <a href="#customization">pi packages</a>.</p>
+
+            <h3>Plataformas Suportadas</h3>
+            <p><a href="https://pi.dev/docs/latest/windows" target="_blank" rel="noopener">Windows</a> | <a href="https://pi.dev/docs/latest/termux" target="_blank" rel="noopener">Termux (Android)</a> | <a href="https://pi.dev/docs/latest/tmux" target="_blank" rel="noopener">tmux</a> | <a href="https://pi.dev/docs/latest/terminal-setup" target="_blank" rel="noopener">Terminal setup</a> | <a href="https://pi.dev/docs/latest/shell-aliases" target="_blank" rel="noopener">Shell aliases</a></p>
+        </section>
+
+        <section id="ferramentas">
+            <h2>Ferramentas</h2>
+            <p>O Pi vem com padrões poderosos, mas omite features como sub agents e plan mode. Em vez disso, você pode pedir para o pi construir o que quiser ou instalar um pi package de terceiros que corresponda ao seu fluxo de trabalho.</p>
+
+            <h3>Ferramentas embutidas</h3>
+            <ul>
+                <li><code>read</code> - Lê o conteúdo de arquivos</li>
+                <li><code>write</code> - Escreve conteúdo em arquivos</li>
+                <li><code>edit</code> - Edita o conteúdo de arquivos</li>
+                <li><code>bash</code> - Executa comandos</li>
+                <li><code>grep</code> - via flags</li>
+                <li><code>find</code> - via flags</li>
+                <li><code>ls</code> - via flags</li>
+            </ul>
+
+            <p>Veja a referência da CLI para opções de allowlist/exclude de ferramentas.</p>
+        </section>
+
+        <section id="modos">
+            <h2>Modos</h2>
+            <p>O Pi roda em quatro modos: interativo, print ou JSON, RPC para integração de processos, e um SDK para embutir nas suas próprias apps.</p>
+
+            <div class="modes-grid">
+                <div class="mode-card">
+                    <h3>Modo Interativo</h3>
+                    <p>Interface de terminal principal com editor, mensagens e comandos</p>
+                </div>
+                <div class="mode-card">
+                    <h3>Modo Print (-p)</h3>
+                    <p>Imprime a resposta e sai (útil para scripts)</p>
+                </div>
+                <div class="mode-card">
+                    <h3>Modo JSON (--mode json)</h3>
+                    <p>Emite todos os eventos como linhas JSON (veja docs/json.md)</p>
+                </div>
+                <div class="mode-card">
+                    <h3>Modo RPC (--mode rpc)</h3>
+                    <p>Modo RPC para integração de processos via stdin/stdout</p>
+                </div>
+                <div class="mode-card">
+                    <h3>SDK</h3>
+                    <p>Embutir nas suas próprias apps via @earendil-works/pi-coding-agent</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="providers">
+            <h2>Providers</h2>
+            <p>O Pi mantém uma lista de modelos com capacidade de tools por provider. Os catálogos são atualizados automaticamente; execute <code>pi update --models</code> para forçar uma atualização imediata. Autentique via subscription (<code>/login</code>) ou API key, e então selecione qualquer modelo daquele provider via <code>/model</code> (ou Ctrl+L)</p>
+
+            <h3>Subscriptions</h3>
+            <ul>
+                <li>Anthropic Claude Pro/Max</li>
+                <li>OpenAI ChatGPT Plus/Pro (Codex)</li>
+                <li>GitHub Copilot</li>
+                <li>xAI (Grok/X subscription)</li>
+                <li>Radius</li>
+            </ul>
+
+            <h3>API Keys</h3>
+            <p>Mais de 30 providers suportados via variáveis de ambiente ou arquivo de auth. Veja <a href="https://pi.dev/docs/latest/providers" target="_blank" rel="noopener">docs/providers.md</a> para instruções de setup detalhadas.</p>
+        </section>
+
+        <section id="sessions">
+            <h2>Sessions</h2>
+            <p>As sessions são armazenadas como arquivos JSONL com uma estrutura em árvore. Cada entry tem um <code>id</code> e <code>parentId</code>, permitindo branching in-place sem criar novos arquivos. Veja <a href="https://pi.dev/docs/latest/session-format" target="_blank" rel="noopener">docs/session-format.md</a> para o formato.</p>
+
+            <h3>Management</h3>
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code>pi -c                  # Continue a session mais recente
+pi -r                  # Navegue e selecione de sessions passadas
+pi --no-session        # Modo efêmero (não salvar)
+pi --name "my task"    # Define o nome de exibição da session ao iniciar
+pi --session <path|id> # Usa um arquivo de session específico ou ID
+pi --fork <path|id>    # Faz fork de um arquivo de session ou ID específico em uma nova session</code></pre>
+            </div>
+
+            <h3>Branching</h3>
+            <p><code>/tree</code> - Navega pela árvore de sessions in-place. Selecione qualquer ponto anterior, continue a partir dali e alterne entre branches. Todo o histórico é preservado em um único arquivo.</p>
+
+            <p><code>/fork</code> - Cria um novo arquivo de session a partir de uma mensagem do usuário anterior no branch ativo. Abre um seletor, copia o caminho ativo até aquele ponto e coloca o prompt selecionado no editor para modificação.</p>
+
+            <p><code>/clone</code> - Duplica o branch ativo atual em um novo arquivo de session na posição atual. A nova session mantém o histórico completo do caminho ativo e abre com o editor vazio.</p>
+
+            <h3>Compaction</h3>
+            <p>Sessions longas podem esgotar a janela de contexto. A compaction resume mensagens mais antigas enquanto mantém as recentes.</p>
+
+            <p><code>/compact</code> ou <code>/compact &lt;custom instructions&gt;</code></p>
+
+            <p>Compaction automática habilitada por padrão. Dispara em caso de overflow de contexto ou ao se aproximar do limite. Customize via extensions.</p>
+        </section>
+
+        <section id="context-files">
+            <h2>Context Files</h2>
+            <p>Pi carrega <code>AGENTS.md</code> (ou <code>CLAUDE.md</code>) na inicialização a partir de:</p>
+            <ul>
+                <li><code>~/.pi/agent/AGENTS.md</code> (global)</li>
+                <li>Diretórios ancestrais (subindo a partir do cwd)</li>
+                <li>Diretório atual</li>
+            </ul>
+
+            <p>Use para instruções do projeto (<code>AGENTS.md</code>/<code>CLAUDE.md</code>), convenções e comandos comuns. Todos os arquivos correspondentes são concatenados.</p>
+
+            <p>Desabilite o carregamento de context files com <code>--no-context-files</code> (ou <code>-nc</code>).</p>
+
+            <h3>System Prompt</h3>
+            <p>Substitua o system prompt padrão com <code>.pi/SYSTEM.md</code> (projeto) ou <code>~/.pi/agent/SYSTEM.md</code> (global). Acrescente sem substituir via <code>APPEND_SYSTEM.md</code>.</p>
+        </section>
+
+        <section id="customization">
+            <h2>Customization</h2>
+
+            <h3>Prompt Templates</h3>
+            <p>Prompts reutilizáveis como arquivos Markdown. Digite <code>/name</code> para expandir.</p>
+
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code># ~/.pi/agent/prompts/review.md
+Revise este código em busca de bugs, problemas de segurança e performance.
+Foque em: {{focus}}</code></pre>
+            </div>
+
+            <p>Coloque em <code>~/.pi/agent/prompts/</code>, <code>.pi/prompts/</code>, ou em um <a href="#customization">pi package</a> para compartilhar com outros.</p>
+
+            <h3>Skills</h3>
+            <p>On-demand capability packages following the <a href="https://agentskills.io" target="_blank" rel="noopener">Agent Skills standard</a>. Invoke via <code>/skill:name</code> or let the agent load them automatically.</p>
+
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code># ~/.pi/agent/skills/my-skill/SKILL.md
+# My Skill
+Use this skill when the user asks about X.
+
+## Steps
+1. Do this
+2. Then that</code></pre>
+            </div>
+
+            <p>Place in <code>~/.pi/agent/skills/</code>, <code>~/.agents/skills/</code>, <code>.pi/skills/</code>, or <code>.agents/skills/</code> (from <code>cwd</code> up through parent directories) or a <a href="#customization">pi package</a> to share with others.</p>
+
+            <h3>Extensions</h3>
+            <p>TypeScript modules que extend pi with custom tools, commands, keyboard shortcuts, event handlers, and UI components.</p>
+
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code>export default function (pi: ExtensionAPI) {
+  pi.registerTool({ name: "deploy", ... });
+  pi.registerCommand("stats", { ... });
+  pi.on("tool_call", async (event, ctx) => { ... });
+}</code></pre>
+            </div>
+
+            <p><strong>What's possible:</strong></p>
+            <ul>
+                <li>Custom tools (or replace built-in tools entirely)</li>
+                <li>Sub-agents and plan mode</li>
+                <li>Custom compaction and summarization</li>
+                <li>Permission gates and path protection</li>
+                <li>Custom editors and UI components</li>
+                <li>Status lines, headers, footers</li>
+                <li>Git checkpointing and auto-commit</li>
+                <li>SSH and sandbox execution</li>
+                <li>MCP server integration</li>
+                <li>Make pi look like Claude Code</li>
+                <li>Games while waiting (yes, Doom runs)</li>
+                <li>...anything you can dream up</li>
+            </ul>
+
+            <p>Place in <code>~/.pi/agent/extensions/</code>, <code>.pi/extensions/</code>, or a <a href="#customization">pi package</a> to share with others.</p>
+
+            <h3>Themes</h3>
+            <p>Built-in: <code>dark</code>, <code>light</code>. Themes hot-reload: modify the active theme file and pi immediately applies changes.</p>
+
+            <h3>Pi Packages</h3>
+            <p>Bundle and share extensions, skills, prompts, and themes via npm or git. Find packages on <a href="https://www.npmjs.com/search?q=keywords%3Api-package">npmjs.com</a> or <a href="https://discord.com/channels/1456806362351669492/1457744485428629628">Discord</a>.</p>
+
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code>pi install npm:@foo/pi-tools
+pi install npm:@foo/pi-tools@1.2.3      # pinned version
+pi install git:github.com/user/repo
+pi install git:github.com/user/repo@v1  # tag or commit
+pi install ssh://git@github.com/user/repo
+pi remove npm:@foo/pi-tools
+pi list
+pi update                               # update pi only
+pi update --all                         # update pi and packages
+pi update --extensions                  # update packages only
+pi update --models                      # refresh model catalogs only
+pi update npm:@foo/pi-tools             # update one package</code></pre>
+            </div>
+        </section>
+
+        <section id="security">
+            <h2>Security</h2>
+            <p>Pi is um local coding agent. Ele runs com as permissões da conta de usuário que starts it, and treats files writable por esse usuário como dentro do mesmo local trust boundary.</p>
+
+            <h3>Project Trust</h3>
+            <p>Project trust controls whether pi loads project-local settings, resources, packages, and extensions. It is not a sandbox and it does not restrict what the model pode pedir tools to do after you start working em uma directory.</p>
+
+            <p>Pi considers um project para ter resources que require trust when encontra any of these a partir do working directory:</p>
+            <ul>
+                <li><code>.pi/settings.json</code></li>
+                <li><code>.pi/extensions</code>, <code>.pi/skills</code>, <code>.pi/prompts</code>, or <code>.pi/themes</code></li>
+                <li><code>.pi/SYSTEM.md</code> or <code>.pi/APPEND_SYSTEM.md</code></li>
+                <li>project <code>.agents/skills</code> in the current directory or an ancestor directory</li>
+            </ul>
+
+            <h3>No Built-in Sandbox</h3>
+            <p>Pi does not include um built-in sandbox. Built-in tools podem read files, write files, edit files, and run shell commands com as permissões do processo pi.</p>
+
+            <h3>Running Untrusted Work</h3>
+            <p>For untrusted repositories, generated code you do not intend to monitor closely, or unattended automation, execute pi em um contained environment. Use um container, VM, micro-VM, remote sandbox, or policy-controlled sandbox com apenas os arquivos e credentials required for the task.</p>
+
+            <p>Common patterns are documented em <a href="https://pi.dev/docs/latest/containerization" target="_blank" rel="noopener">Containerization</a>:</p>
+            <ul>
+                <li>run o whole <code>pi</code> process em um container/sandbox</li>
+                <li>run host pi enquanto routing built-in tool execution em um Gondolin micro-VM</li>
+                <li>mount apenas o workspace paths o agent deve access</li>
+                <li>avoid mounting host <code>~/.pi/agent</code> unless the container deve access host sessions, settings, and credentials</li>
+                <li>pass o minimum required API keys or use short-lived credentials</li>
+                <li>restrict network access when the task does not need it</li>
+                <li>review diffs e outputs antes de copying results back to trusted systems</li>
+            </ul>
+        </section>
+
+        <section id="ux">
+            <h2>UX & Keyboard Shortcuts</h2>
+
+            <h3>Atalhos do Editor</h3>
+            <ul>
+                <li><code>Ctrl+G</code> - Open in external editor (<code>externalEditor</code>, <code>$VISUAL</code>, <code>$EDITOR</code>, Notepad em Windows, ou <code>nano</code> elsewhere)</li>
+                <li><code>Ctrl+V</code> - Paste uma image ou text (<code>Alt+V</code> em Windows), or drag images onto terminal</li>
+                <li><code>!command</code> - Runs e sends output to LLM, <code>!!command</code> runs without sending</li>
+                <li><code>@</code> - Fuzzy-search project files</li>
+                <li><code>Ctrl+L</code> - Open model selector</li>
+                <li><code>Shift+Tab</code> - Cycle thinking level</li>
+                <li><code>Ctrl+T</code> - Collapse or expand thinking blocks</li>
+                <li><code>Ctrl+O</code> - Collapse or expand tool output</li>
+                <li><code>Ctrl+X</code> - Copy the last assistant message</li>
+            </ul>
+
+            <h3>Application</h3>
+            <ul>
+                <li><code>Escape</code> - Cancel / abort</li>
+                <li><code>Ctrl+C</code> - Clear editor</li>
+                <li><code>Ctrl+D</code> - Exit (quando editor vazio)</li>
+                <li><code>Alt+Enter</code> - Queue follow-up message</li>
+                <li><code>Alt+Up</code> - Restore queued messages to editor</li>
+                <li><code>Ctrl+P</code> / <code>Shift+Ctrl+P</code> - Cycle scoped models forward/backward</li>
+                <li><code>/hotkeys</code> - Show all atalhos keyboard</li>
+            </ul>
+
+            <p>Veja <a href="https://pi.dev/docs/latest/keybindings" target="_blank" rel="noopener">docs/keybindings.md</a> para full list and customization.</p>
+        </section>
+
+        <section id="privacy">
+            <h2>Privacy & Telemetry</h2>
+
+            <h3>Update Checks</h3>
+            <p>Pi fetches <code>https://pi.dev/api/latest-version</code> to check se um newer Pi version existe. Disable it with <code>PI_SKIP_VERSION_CHECK=1</code>. Disabling update checks apenas turns off this check.</p>
+
+            <h3>Install/Update Telemetry</h3>
+            <p>After first install or a changelog-detected update, envia um anonymous version ping to <code>https://pi.dev/api/report-install</code>. This setting também controls optional provider attribution headers for OpenRouter, Cloudflare, and direct NVIDIA NIM requests. Opt out by setting <code>enableInstallTelemetry</code> to <code>false</code> em <code>settings.json</code>, or by setting <code>PI_TELEMETRY=0</code>. This does not disable update checks; Pi may still contact <code>pi.dev</code> para a latest version unless update checks are disabled or offline mode is enabled.</p>
+
+            <h3>Offline Mode</h3>
+            <p>Use <code>--offline</code> ou <code>PI_OFFLINE=1</code> para disable all startup network operations descritos aqui, including update checks, package update checks, and install/update telemetry.</p>
+        </section>
+
+        <section id="sdk">
+            <h2>SDK & Programmatic Usage</h2>
+
+            <h3>SDK</h3>
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code>import { createAgentSession, ModelRuntime, SessionManager } from "@earendil-works/pi-coding-agent";
+
+const modelRuntime = await ModelRuntime.create();
+const { session } = await createAgentSession({
+  sessionManager: SessionManager.inMemory(),
+  modelRuntime,
+});
+
+await session.prompt("What files are in the current directory?");</code></pre>
+            </div>
+
+            <h3>RPC Mode</h3>
+            <p>For non-Node.js integrations, use RPC mode over stdin/stdout:</p>
+
+            <div class="code-block">
+                <button class="copy-btn" type="button" aria-label="Copiar código">📋 Copiar</button>
+                <pre><code>pi --mode rpc</code></pre>
+            </div>
+
+            <p>RPC mode uses strict LF-delimited JSONL framing. Clients deve split records em <code>\n</code> apenas. Do not use generic line readers como Node <code>readline</code>, which também split em Unicode separators dentro JSON payloads.</p>
+
+            <p>Veja <a href="https://pi.dev/docs/latest/rpc" target="_blank" rel="noopener">docs/rpc.md</a> para o protocolo.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>Site tutorial sobre pi baseado no Pi Coding Agent (@earendil-works/pi-coding-agent)</p>
+            <p>Conteúdo derivado de README.md e docs/ directory apenas</p>
+            <p>Logo: <a href="https://pi.dev">pi.dev</a> | Discord: <a href="https://discord.com/invite/3cU7Bz4UPx">https://discord.com/invite/3cU7Bz4UPx</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

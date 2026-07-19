@@ -1,279 +1,115 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-bs-theme="dark">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Tutorial completo de OmniRoute - Gateway de IA gratuito com 265+ providers, fallback automático e compressão de tokens">
-  <meta name="keywords" content="OmniRoute, AI Gateway, Claude Code, Codex, Cursor, IA gratuita, tutorial">
-  <title>OmniRoute Tutorial - Gateway de IA Gratuito | 265+ Providers</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="description" content="Tutoriais em português sobre ferramentas de IA. Escolha qual tutorial deseja acessar.">
+  <title>Tutoriais de IA</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #0d1117;
+      --bg-soft: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    html { height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      line-height: 1.5;
+    }
+
+    header { text-align: center; margin-bottom: 2.5rem; }
+    header h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 600; }
+    header p { margin: 0.6rem 0 0; color: var(--text-muted); font-size: 1.05rem; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem 1.6rem;
+      transition: transform 0.18s ease, border-color 0.18s ease,
+                  box-shadow 0.18s ease;
+      box-shadow: var(--shadow);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5);
+    }
+
+    .card .icon { font-size: 2.4rem; line-height: 1; margin-bottom: 0.8rem; }
+    .card h2 { margin: 0 0 0.4rem; font-size: 1.25rem; font-weight: 600; }
+    .card p  { margin: 0; color: var(--text-muted); font-size: 0.95rem; flex-grow: 1; }
+    .card .go {
+      margin-top: 1.2rem;
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <div class="wrapper">
-    <div id="sidebar-placeholder"></div>
-    
-    <main class="main-content">
-      <section class="hero">
-        <div class="hero-content">
-          <h1>🚀 OmniRoute</h1>
-          <p class="lead">Never stop coding. Gateway de IA gratuito com 265+ providers, fallback automático e 90+ tiers grátis</p>
-          
-          <div class="hero-badges">
-            <div class="badge-item">
-              <span class="number">19K</span> ⭐ GitHub Stars
-            </div>
-            <div class="badge-item">
-              <span class="number">265</span> Providers de IA
-            </div>
-            <div class="badge-item">
-              <span class="number">90+</span> Grátis para sempre
-            </div>
-            <div class="badge-item">
-              <span class="number">~1.6B</span> Tokens grátis/mês
-            </div>
-          </div>
-          
-          <div style="margin-top: 2.5rem;">
-            <a href="instalacao.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-purple); margin-right: 1rem;">
-              Começar Agora
-            </a>
-            <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" class="btn btn-lg btn-outline-light" style="padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600;">
-              Ver no GitHub
-            </a>
-          </div>
-        </div>
-      </section>
-      
-      <div class="content-wrapper">
-        <section>
-          <h2>O que é o OmniRoute?</h2>
-          <p>O <strong>OmniRoute</strong> é um gateway de IA open-source que conecta <strong>265 providers de IA</strong> através de um único endpoint local (<code>http://localhost:20128/v1</code>). Ele oferece <strong>fallback automático</strong> entre providers, <strong>compressão de tokens</strong> (economiza 15-95%), suporte a <strong>90+ providers gratuitos</strong>, e integração perfeita com Claude Code, Codex, Cursor, Cline, Copilot, OpenCode e outros agentes de IA.</p>
-          
-          <div class="alert-info">
-            <strong>💡 Por que usar o OmniRoute?</strong><br>
-            Pare de desperdiçar dinheiro com quotas não utilizadas, limites de taxa que interrompem seu trabalho, e configuração repetitiva de cada ferramenta. O OmniRoute gerencia tudo automaticamente.
-          </div>
-        </section>
+  <header>
+    <h1>Tutoriais de IA</h1>
+    <p>Escolha qual ferramenta deseja aprender</p>
+  </header>
 
-        <section class="mt-4">
-          <h2>🎯 Principais Benefícios</h2>
-          <div class="card-grid">
-            <div class="card-tech">
-              <h3>🚫 Zero Downtime</h3>
-              <p>Fallback automático em 4 níveis: Assinatura → API Key → Cheap → Free. Quando um provider atinge o limite, o próximo assume instantaneamente.</p>
-            </div>
-            
-            <div class="card-tech">
-              <h3>💸 Economize até 95%</h3>
-              <p>Compressão RTK + Caveman reduz 15-95% dos tokens elegíveis. Menos tokens = menos custos + mais requisições dentro da sua quota.</p>
-            </div>
-            
-            <div class="card-tech">
-              <h3>🆓 $0 para Começar</h3>
-              <p>90+ providers com tier grátis. 11 são grátis para sempre (Kiro, Qoder, Qwen, Pollinations...). Sem cartão de crédito.</p>
-            </div>
-            
-            <div class="card-tech">
-              <h3>🔌 Tudo Funciona</h3>
-              <p>24+ agentes de código compatíveis. Configure uma vez: <code>http://localhost:20128/v1</code> — pronto.</p>
-            </div>
-            
-            <div class="card-tech">
-              <h3>🧩 Um Endpoint</h3>
-              <p>Tradução automática OpenAI ↔ Claude ↔ Gemini ↔ Responses API. Qualquer ferramenta funciona sem reconfiguração.</p>
-            </div>
-            
-            <div class="card-tech">
-              <h3>🛡️ Pronto para Produção</h3>
-              <p>Circuit breakers, TLS stealth, MCP (94 tools), A2A, memória, guardrails, evals. 21.000+ testes.</p>
-            </div>
-          </div>
-        </section>
+  <main class="cards">
+    <a class="card" href="omniroute/">
+      <span class="icon">🚀</span>
+      <h2>OmniRoute</h2>
+      <p>Gateway de IA gratuito com 265+ providers, fallback automático, compressão de tokens e 90+ tiers grátis.</p>
+      <span class="go">Acessar tutorial &rarr;</span>
+    </a>
 
-        <section class="mt-4">
-          <h2>🔄 Como Funciona</h2>
-          <div class="card-tech">
-            <pre><code>┌─────────────┐
-│  Sua IDE    │  (Claude Code, Codex, Cursor, Cline...)
-│   ou CLI    │
-└──────┬──────┘
-       │ http://localhost:20128/v1
-       ↓
-┌─────────────────────────────────────────┐
-│      OmniRoute (Smart Router)           │
-│  • Tradução de formato (OpenAI ↔ Claude)│
-│  • Rastreamento de quota + compressão  │
-│  • Refresh automático de token OAuth    │
-└──────┬──────────────────────────────────┘
-       │
-       ├─→ [Tier 1: ASSINATURA] Claude Code, Codex
-       │   ↓ quota esgotada
-       ├─→ [Tier 2: API KEY] DeepSeek, Groq, xAI, Mistral...
-       │   ↓ limite de budget atingido
-       ├─→ [Tier 3: BARATO] GLM ($0.6/1M), MiniMax ($0.2/1M)
-       │   ↓ limite de budget atingido
-       └─→ [Tier 4: GRÁTIS] Kiro, Qoder, Qwen (ilimitado)
+    <a class="card" href="pi-coding-agent/">
+      <span class="icon">🤖</span>
+      <h2>Pi Coding Agent</h2>
+      <p>Um harness minimalista de codificação para terminal. Instalação, ferramentas, modos, providers, SDK e mais.</p>
+      <span class="go">Acessar tutorial &rarr;</span>
+    </a>
+  </main>
 
-Resultado: Nunca pare de codar, custo mínimo</code></pre>
-          </div>
-        </section>
-
-        <section class="mt-4">
-          <h2>📸 Dashboard Principal</h2>
-          <p>Interface web completa para gerenciar providers, combos, analytics, logs e muito mais.</p>
-          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/screenshots/MainOmniRoute.png" alt="OmniRoute Dashboard" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); margin-top: 1rem;">
-        </section>
-
-        <section class="mt-4">
-          <h2>🚀 Quickstart de 3 Passos</h2>
-          <div class="card-tech">
-            <h3>1. Instale o OmniRoute</h3>
-            <pre><code>npm install -g omniroute
-omniroute</code></pre>
-            <p style="margin-top: 1rem; color: var(--text-secondary);">Dashboard abre em <code>http://localhost:20128</code> e API em <code>http://localhost:20128/v1</code></p>
-          </div>
-          
-          <div class="card-tech">
-            <h3>2. Conecte Providers e Crie API Key</h3>
-            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
-              <li>Abra <strong>Dashboard → Providers</strong> e conecte pelo menos um provider (OAuth ou API key)</li>
-              <li>Abra <strong>Dashboard → Endpoints</strong> e crie uma API key</li>
-              <li>(Opcional) Configure seu combo de fallback em <strong>Dashboard → Combos</strong></li>
-            </ol>
-          </div>
-          
-          <div class="card-tech">
-            <h3>3. Configure Sua Ferramenta de IA</h3>
-            <pre><code>Base URL: http://localhost:20128/v1
-API Key:  [copie do Dashboard → Endpoints]
-Model:    if/kimi-k2-thinking (ou qualquer prefix provider/model)</code></pre>
-          </div>
-        </section>
-
-        <section class="mt-4">
-          <h2>🤖 Agentes Compatíveis</h2>
-          <p>Conecte qualquer ferramenta de IA através do OmniRoute:</p>
-          <div class="card-grid">
-            <div class="card-tech" style="text-align: center;">
-              <h4>OpenCode</h4>
-              <p style="color: var(--text-secondary); font-size: 0.9rem;">⭐ 106K stars</p>
-            </div>
-            <div class="card-tech" style="text-align: center;">
-              <h4>Codex CLI</h4>
-              <p style="color: var(--text-secondary); font-size: 0.9rem;">⭐ 60.8K stars</p>
-            </div>
-            <div class="card-tech" style="text-align: center;">
-              <h4>Claude Code</h4>
-              <p style="color: var(--text-secondary); font-size: 0.9rem;">⭐ 67.3K stars</p>
-            </div>
-            <div class="card-tech" style="text-align: center;">
-              <h4>OpenClaw</h4>
-              <p style="color: var(--text-secondary); font-size: 0.9rem;">⭐ 205K stars</p>
-            </div>
-            <div class="card-tech" style="text-align: center;">
-              <h4>Cursor</h4>
-              <p style="color: var(--text-secondary); font-size: 0.9rem;">IDE Editor</p>
-            </div>
-            <div class="card-tech" style="text-align: center;">
-              <h4>Cline</h4>
-              <p style="color: var(--text-secondary); font-size: 0.9rem;">VS Code Extension</p>
-            </div>
-          </div>
-          <p style="text-align: center; margin-top: 1.5rem;">
-            <a href="conectar-agentes.html" class="text-cyan">Ver guia completo de configuração →</a>
-          </p>
-        </section>
-
-        <section class="faq-section">
-          <h2>❓ Perguntas Frequentes</h2>
-          <div class="accordion" id="faqAccordion">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                  O OmniRoute é realmente gratuito?
-                </button>
-              </h2>
-              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Sim! O OmniRoute é 100% open-source (MIT license). Você pode usar gratuitamente para sempre. Além disso, ele agrega 90+ providers de IA que possuem tiers gratuitos, incluindo 11 que são grátis para sempre (Kiro, Qoder, Qwen, Pollinations, LongCat, etc.).
-                </div>
-              </div>
-            </div>
-            
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                  Preciso de conhecimento técnico para usar?
-                </button>
-              </h2>
-              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Não necessariamente. Se você já usa ferramentas como Claude Code ou Codex, vai conseguir configurar o OmniRoute em 5 minutos. Basta instalar com <code>npm install -g omniroute</code>, abrir o dashboard, conectar um provider e apontar sua ferramenta para <code>http://localhost:20128/v1</code>.
-                </div>
-              </div>
-            </div>
-            
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                  Meus dados ficam seguros?
-                </button>
-              </h2>
-              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Sim. O OmniRoute roda 100% localmente no seu computador (<code>localhost:20128</code>). Nenhum código ou contexto é armazenado externamente. As credenciais de API são criptografadas com AES-256-GCM. O proxy apenas roteia suas requisições para os providers que você configurou.
-                </div>
-              </div>
-            </div>
-            
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                  Como funciona o fallback automático?
-                </button>
-              </h2>
-              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Quando você faz uma requisição, o OmniRoute verifica se o provider primário tem quota disponível. Se não tiver, ele automaticamente redireciona para o próximo provider na cadeia (combo). Você configura a ordem de preferência no dashboard. Existem 18 estratégias de roteamento, incluindo <code>auto</code>, <code>priority</code>, <code>cost-optimized</code>, <code>context-relay</code>, entre outras.
-                </div>
-              </div>
-            </div>
-            
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                  Quais providers são suportados?
-                </button>
-              </h2>
-              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  265+ providers, incluindo: Claude Code, Codex, OpenAI, Anthropic, Gemini, DeepSeek, Groq, xAI (Grok), Mistral, NVIDIA NIM, Qwen, Kiro, Qoder, Pollinations, LongCat, Hyperbolic, Together AI, Fireworks, Cerebras, Cloudflare Workers AI, e muitos mais. Veja a lista completa no <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" class="text-cyan">README oficial</a>.
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section style="text-align: center; margin-top: 4rem; padding: 3rem 2rem; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border-color);">
-          <h2>Pronto para Começar?</h2>
-          <p style="color: var(--text-secondary); max-width: 600px; margin: 1rem auto;">Instale o OmniRoute em 2 minutos e nunca mais se preocupe com limites de quota ou APIs caras.</p>
-          <a href="instalacao.html" class="btn btn-lg" style="background: var(--gradient-primary); color: white; border: none; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 600; box-shadow: var(--glow-purple); margin-top: 1.5rem;">
-            Ver Guia de Instalação →
-          </a>
-        </section>
-      </div>
-    </main>
-  </div>
-
-  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/main.js"></script>
+  <footer>
+    Tutoriais em português &middot; <a href="https://github.com/xLIVESEYx/Tutoriais-IA" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">GitHub</a>
+  </footer>
 </body>
 </html>
