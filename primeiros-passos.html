@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Configuração inicial do OmniRoute: conectar providers, criar API key e configurar combos">
+  <title>Configuração Inicial | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>🎯 Configuração Inicial</h1>
+        <p class="lead" style="color: var(--text-secondary);">Após instalar o OmniRoute, você precisa conectar pelo menos um provider de IA e criar uma API key para usar com suas ferramentas.</p>
+
+        <section class="mt-4">
+          <h2>📋 Visão Geral do Dashboard</h2>
+          <p>O dashboard do OmniRoute é a interface principal para gerenciar tudo. Abra no navegador:</p>
+          <pre><code>http://localhost:20128</code></pre>
+          
+          <p style="margin-top: 1.5rem;">Páginas principais do dashboard:</p>
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>📊 Providers</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Conecte e gerencie todos os providers de IA</p>
+            </div>
+            <div class="card-tech">
+              <h4>🔀 Combos</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Configure cadeias de fallback e estratégias de roteamento</p>
+            </div>
+            <div class="card-tech">
+              <h4>📈 Analytics</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Custos, uso por modelo, taxa de sucesso e latência</p>
+            </div>
+            <div class="card-tech">
+              <h4>💚 Health</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Status de circuit breakers, cooldowns e cache</p>
+            </div>
+            <div class="card-tech">
+              <h4>🌐 Endpoints</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Crie e gerencie suas API keys</p>
+            </div>
+            <div class="card-tech">
+              <h4>🛠️ CLI Tools</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Setup one-click para Claude Code, Codex, Cursor...</p>
+            </div>
+          </div>
+
+          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/screenshots/01-providers.png" alt="Página Providers" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 2rem;">
+        </section>
+
+        <section class="mt-4">
+          <h2>1️⃣ Passo 1: Conectar um Provider</h2>
+          <p>Vá em <strong>Dashboard → Providers</strong> e conecte pelo menos um provider. Existem duas formas de conexão:</p>
+          
+          <div class="card-tech">
+            <h3>Opção A: OAuth (Subscription)</h3>
+            <p>Para providers como Claude Code, Codex, Copilot, Kiro, Qwen, Qoder — o OmniRoute faz o fluxo OAuth 2.0 (PKCE) automaticamente:</p>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Clique no provider desejado</li>
+              <li>Clique em <strong>"Connect"</strong></li>
+              <li>Faça login no navegador</li>
+              <li>Os tokens são armazenados e renovados automaticamente</li>
+            </ol>
+            <div class="alert-success">
+              <strong>✅ Vantagem:</strong> Usa sua assinatura existente (Claude Pro, Codex Pro, etc.) sem custo adicional.
+            </div>
+          </div>
+
+          <div class="card-tech">
+            <h3>Opção B: API Key</h3>
+            <p>Para providers como DeepSeek, Groq, xAI, Mistral, OpenAI — você fornece uma API key:</p>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Crie uma conta no site do provider</li>
+              <li>Gere uma API key no painel deles</li>
+              <li>No OmniRoute, clique no provider e cole a key</li>
+              <li>A key é criptografada com AES-256-GCM e armazenada localmente</li>
+            </ol>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Dica:</strong> Você pode conectar múltiplas contas do mesmo provider! O OmniRoute faz round-robin entre elas automaticamente. Quando uma atinge o limite, passa para a próxima.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>2️⃣ Passo 2: Criar Sua API Key</h2>
+          <p>Agora você precisa de uma API key do próprio OmniRoute para usar nas suas ferramentas de IA:</p>
+          
+          <div class="card-tech">
+            <ol style="margin-left: 1.5rem;">
+              <li>Vá em <strong>Dashboard → Endpoints</strong></li>
+              <li>Clique em <strong>"Create API Key"</strong></li>
+              <li>Dê um nome descritivo (ex: "claude-code-local")</li>
+              <li><strong>(Opcional)</strong> Restrinja a key a modelos específicos:<br>
+                <code>openai/*</code> — todos os modelos OpenAI<br>
+                <code>anthropic/*</code> — todos os Claude<br>
+                <code>if/*</code> — apenas modelos do Kiro/Kimi<br>
+                Ou use wildcards como <code>*/gpt-4*</code>
+              </li>
+              <li>Copie a key gerada <strong>imediatamente</strong> — ela não é mostrada novamente</li>
+            </ol>
+          </div>
+
+          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/screenshots/09-endpoint.png" alt="Página Endpoints - criar API key" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+        </section>
+
+        <section class="mt-4">
+          <h2>3️⃣ Passo 3: Configurar um Combo (Opcional mas Recomendado)</h2>
+          <p>Um <strong>combo</strong> é uma cadeia de fallback. Vá em <strong>Dashboard → Combos</strong>:</p>
+          
+          <div class="card-tech">
+            <h3>Combo zero-config: use <code>auto</code></h3>
+            <p>A forma mais simples — basta definir o modelo como <code>auto</code> e o OmniRoute constrói um combo virtual automaticamente, escolhendo o melhor provider disponível em tempo real.</p>
+            <pre><code>Model: auto</code></pre>
+            <p style="margin-top: 1rem;">Variantes:</p>
+            <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li><code>auto</code> — balanceado (default, LKGP)</li>
+              <li><code>auto/coding</code> — qualidade primeiro para código</li>
+              <li><code>auto/fast</code> — menor latência</li>
+              <li><code>auto/cheap</code> — mais barato por token</li>
+              <li><code>auto/offline</code> — mais quota restante</li>
+              <li><code>auto/smart</code> — qualidade-first + 10% exploração</li>
+            </ul>
+          </div>
+
+          <div class="card-tech">
+            <h3>Combo customizado (exemplo)</h3>
+            <p>Exemplo: maximizar assinatura paga + barato + fallback grátis:</p>
+            <pre><code>Combo: "maximize-claude"
+  1. cc/claude-opus-4-7          ← assinatura Claude Pro
+  2. glm/glm-4.7                 ← barato ($0.6/1M)
+  3. if/kimi-k2-thinking         ← grátis (Kiro)
+
+Custo mensal: $20 + pouco backup
+Resultado: alta qualidade, quase zero interrupção</code></pre>
+          </div>
+          
+          <p style="margin-top: 1.5rem;">
+            <a href="combos.html" class="text-cyan">Ver guia completo de Combos →</a>
+          </p>
+        </section>
+
+        <section class="mt-4">
+          <h2>4️⃣ Passo 4: Apontar Sua Ferramenta</h2>
+          <p>Configure sua ferramenta de IA (Claude Code, Cursor, Cline, etc.) com os 3 valores:</p>
+          
+          <div class="card-tech">
+            <pre><code>Base URL: http://localhost:20128/v1
+API Key:  [cole a key do passo 2]
+Model:    if/kimi-k2-thinking  (ou qualquer provider/model prefix)</code></pre>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Cloud Endpoint:</strong> Se preferir não rodar local, pode usar <code>http://cloud.omniroute.online/v1</code> com sua API key. Mas para máxima privacidade, use localhost.
+          </div>
+          
+          <p style="margin-top: 1.5rem;">
+            <a href="conectar-agentes.html" class="text-cyan">Ver guia completo por ferramenta →</a>
+          </p>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧪 Validação Rápida</h2>
+          <p>Teste se tudo está funcionando com curl:</p>
+          
+          <div class="card-tech">
+            <h3>Listar modelos disponíveis</h3>
+            <pre><code>curl http://localhost:20128/v1/models \
+  -H "Authorization: Bearer SUA_API_KEY"</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Fazer um chat completion de teste</h3>
+            <pre><code>curl http://localhost:20128/v1/chat/completions \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "if/kimi-k2-thinking",
+    "messages": [{"role": "user", "content": "Oi!"}]
+  }'</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔒 Segurança da Sua API Key</h2>
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>🔐 Permissões por modelo</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Restrinja keys a modelos específicos com wildcards</p>
+            </div>
+            <div class="card-tech">
+              <h4>🚫 Rate limiter por IP</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Bloqueie abuso sem autorização</p>
+            </div>
+            <div class="card-tech">
+              <h4>📋 IP filtering</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Allowlist/blocklist de IPs</p>
+            </div>
+            <div class="card-tech">
+              <h4>🛡️ CSRF + Auth Guard</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Todas rotas do dashboard protegidas</p>
+            </div>
+          </div>
+
+          <div class="alert-warning">
+            <strong>⚠️ Importante:</strong> Se você expor o OmniRoute em rede (LAN, VPS, Docker), SEMPRE configure API key + rate limiter. Sem proteção, qualquer um com o endereço pode consumir seus tokens.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📊 Monitoramento e Analytics</h2>
+          <p>Após começar a usar, monitore no <strong>Dashboard → Analytics</strong>:</p>
+          <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+            <li>📊 Custo por token, por provider, por modelo</li>
+            <li>📈 Total de requests, taxa de sucesso, latência p50/p95/p99</li>
+            <li>📉 Cache hit rate (semantic cache</li>
+            <li>🔧 Logs unificados (Request, Proxy, Audit, Console)</li>
+          </ul>
+          
+          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/screenshots/03-analytics.png" alt="Analytics Dashboard" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="instalacao.html" style="color: var(--text-secondary);">← Instalação</a>
+          <a href="conectar-agentes.html" class="text-cyan" style="font-weight: 600;">Próximo: Conectar Agentes de IA →</a>
+        </div>
+
+        <section class="faq-section">
+          <h2>❓ Perguntas Frequentes</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  Posso usar o OmniRoute sem conectar nenhum provider?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Não, você precisa de pelo menos um provider conectado para fazer requisições. Mas 11 providers são grátis para sempre (Kiro, Qoder, Qwen, Pollinations, LongCat...) — basta conectar um desses com OAuth e você já tem IA gratuita ilimitada. Veja o <a href="free-tiers.html" class="text-cyan">guia de providers grátis</a>.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Quantos providers posso conectar?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Não há limite. Você pode conectar todos os 265+ providers e múltiplas contas por provider. O OmniRoute gerenciará round-robin, quotas e fallback automaticamente entre todas as conexões.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Minhas API keys e tokens são seguros?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim. Todas as credenciais (API keys, OAuth tokens) são criptografadas com AES-256-GCM antes de serem armazenadas em <code>~/.omniroute</code>. Nada é enviado para servidores externos — o OmniRoute roda 100% localmente.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  O que é o endpoint cloud.omniroute.online?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  É uma versão cloud do OmniRoute caso você não queira rodar localmente. É útil para dispositivos móveis ou uso em múltiplos PCs. No entanto, para máxima privacidade e controle, recomendamos rodar localmente em <code>http://localhost:20128/v1</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

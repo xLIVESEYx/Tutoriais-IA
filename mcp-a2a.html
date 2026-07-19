@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guia do MCP Server e A2A Protocol no OmniRoute: 94 ferramentas, 3 transportes, A2A JSON-RPC, descoberta de agentes">
+  <title>🧰 MCP Server & A2A | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>🧰 MCP Server & A2A Protocol</h1>
+        <p class="lead" style="color: var(--text-secondary);">O OmniRoute roda um servidor MCP nativo (94 ferramentas, 3 transportes) e implementa o protocolo A2A para orquestração de agentes.</p>
+
+        <section class="mt-4">
+          <h2>🚀 Início Rápido: MCP Server</h2>
+          
+          <div class="card-tech">
+            <h3>Iniciar o servidor MCP (stdio)</h3>
+            <pre><code>omniroute --mcp</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Conecte seu cliente MCP (ex: Cursor, Cline, Continue) via <code>stdio</code> transport.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Testar ferramentas MCP</h3>
+            <p>Assim que conectado, use estas ferramentas no seu cliente MCP:</p>
+            <pre><code># Ver health do OmniRoute
+omniroute_get_health
+
+# Listar combos disponíveis
+omniroute_list_combos
+
+# Ver providers conectados
+omniroute_list_providers
+
+# Ver quotas atuais
+omniroute_get_quota
+
+# Executar compressão de contexto
+omniroute_compress_context
+
+# Ver analytics
+omniroute_get_analytics</code></pre>
+          </div>
+
+          <div class="alert-success">
+            <strong>✅ 94 Ferramentas Disponíveis</strong> — Cobrem: providers, combos, quotas, logs, analytics, config, API keys, proxy, compressão, MCP, A2A, memória, skills e muito mais.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔧 3 Transportes MCP</h2>
+          <p>O OmniRoute MCP Server suporta 3 transportes simultâneos:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Transporte</th>
+                <th>Como Usar</th>
+                <th>Caso de Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>stdio</strong></td>
+                <td><code>omniroute --mcp</code></td>
+                <td>Clientes locais (Cursor, Cline, Continue, VS Code)</td>
+              </tr>
+              <tr>
+                <td><strong>SSE</strong></td>
+                <td><code>omniroute --mcp-sse</code></td>
+                <td>Clientes remotos via HTTP, integrações web</td>
+              </tr>
+              <tr>
+                <td><strong>WebSocket</strong></td>
+                <td><code>omniroute --mcp-ws</code></td>
+                <td>Latência ultra-baixa, streaming bidirecional</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="mt-4">
+          <h2>🤖 A2A Protocol (Agent-to-Agent)</h2>
+          <p>O protocolo A2A permite que agentes se comuniquem diretamente via JSON-RPC 2.0. O OmniRoute expõe:</p>
+          
+          <div class="card-tech">
+            <h3>Endpoints A2A</h3>
+            <pre><code># Agent Card (descoberta)
+GET http://localhost:20128/.well-known/agent.json
+
+# Enviar mensagem (request/response)
+POST http://localhost:20128/a2a
+  method: message/send
+
+# Stream de mensagem (long-running)
+POST http://localhost:20128/a2a
+  method: message/stream
+
+# Obter status de task
+POST http://localhost:20128/a2a
+  method: tasks/get
+
+# Cancelar task
+POST http://localhost:20128/a2a
+  method: tasks/cancel</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Exemplo: message/send</h3>
+            <pre><code>curl -X POST http://localhost:20128/a2a \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "task-001",
+    "method": "message/send",
+    "params": {
+      "skill": "quota-management",
+      "messages": [
+        {"role": "user", "content": "Me dê um resumo das quotas atuais"}
+      ]
+    }
+  }'</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Exemplo: message/stream (SSE)</h3>
+            <pre><code>curl -N -X POST http://localhost:20128/a2a \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "stream-001",
+    "method": "message/stream",
+    "params": {
+      "skill": "code-generation",
+      "messages": [
+        {"role": "user", "content": "Crie uma API REST em FastAPI com autenticação JWT"}
+      ]
+    }
+  }'
+# Resposta vem como Server-Sent Events (SSE)</code></pre>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Skills Disponíveis (6):</strong> <code>quota-management</code>, <code>code-generation</code>, <code>debugging</code>, <code>documentation</code>, <code>analysis</code>, <code>planning</code>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔍 Descoberta de Agentes</h2>
+          <p>O Agent Card em <code>/.well-known/agent.json</code> expõe metadados para clientes externos:</p>
+          
+          <div class="card-tech">
+            <pre><code>curl http://localhost:20128/.well-known/agent.json
+
+# Resposta:
+{
+  "name": "OmniRoute Agent",
+  "description": "Universal AI Gateway with MCP & A2A",
+  "url": "http://localhost:20128",
+  "skills": [
+    {"name": "quota-management", "description": "..."},
+    {"name": "code-generation", "description": "..."}
+  ],
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📊 Monitoramento MCP & A2A no Dashboard</h2>
+          <p>O dashboard tem páginas dedicadas para observabilidade:</p>
+          
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>Endpoints → MCP</h4>
+              <p style="color: var(--text-secondary);">Status do processo MCP (PID, uptime, heartbeat, tool count, scopes), toggle Online/Offline.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Endpoints → A2A</h4>
+              <p style="color: var(--text-secondary);">Active streams, task states, last activity, agent card, toggle serviço.</p>
+            </div>
+            <div class="card-tech">
+              <h4>MCP Management</h4>
+              <p style="color: var(--text-secondary);">Lista de 94 ferramentas, scopes de permissão, audit log de execução.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Health → MCP</h4>
+              <p style="color: var(--text-secondary);">Process health, heartbeat freshness, uptime, circuit breaker states.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔐 Scopes MCP (10 níveis de permissão)</h2>
+          <p>Controle granular do que cada cliente MCP pode fazer:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Scope</th>
+                <th>Permissão</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>providers.read</code></td><td>Ler providers e conexões</td></tr>
+              <tr><td><code>providers.write</code></td><td>Conectar/desconectar providers</td></tr>
+              <tr><td><code>combos.read</code></td><td>Ler combos</td></tr>
+              <tr><td><code>combos.write</code></td><td>Criar/editar/deletar combos</td></tr>
+              <tr><td><code>quotas.read</code></td><td>Ver quotas e limites</td></tr>
+              <tr><td><code>keys.read</code></td><td>Listar API keys</td></tr>
+              <tr><td><code>keys.write</code></td><td>Criar/rotacionar/deletar API keys</td></tr>
+              <tr><td><code>logs.read</code></td><td>Ler logs de requisições</td></tr>
+              <tr><td><code>analytics.read</code></td><td>Ver analytics e custos</td></tr>
+              <tr><td><code>admin</code></td><td>Acesso total (use com cuidado)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧠 Memória & Skills System</h2>
+          <p>O OmniRoute inclui sistema de memória persistente:</p>
+          
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>FTS5 Full-Text Search</h4>
+              <p style="color: var(--text-secondary);">Busca completa em histórico de conversas</p>
+            </div>
+            <div class="card-tech">
+              <h4>Vector Embeddings</h4>
+              <p style="color: var(--text-secondary);">Busca semântica por similaridade</p>
+            </div>
+            <div class="card-tech">
+              <h4>Skills</h4>
+              <p style="color: var(--text-secondary);">Prompt templates reutilizáveis</p>
+            </div>
+            <div class="card-tech">
+              <h4>Guardrails</h4>
+              <p style="color: var(--text-secondary);">PII detection, injection guard, vision safety</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧪 Validação E2E</h2>
+          <p>Teste completo dos protocolos com clientes reais:</p>
+          
+          <div class="card-tech">
+            <pre><code># Rodar suite de testes E2E (requer app rodando)
+npm run test:protocols:e2e</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Valida MCP client transport, A2A discovery, send, stream, get, cancel flows.</p>
+          </div>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="free-tiers.html" style="color: var(--text-secondary);">← Providers Gratuitos</a>
+          <a href="proxy-regiao.html" class="text-cyan" style="font-weight: 600;">Próximo: Proxy e Desbloqueio Regional →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

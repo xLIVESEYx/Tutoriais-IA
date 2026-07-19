@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guia completo sobre Combos e Auto-Fallback no OmniRoute: estratégias de roteamento, criação de combos personalizados e playbooks práticos">
+  <title>Combos e Auto-Fallback | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>🔀 Combos e Auto-Fallback</h1>
+        <p class="lead" style="color: var(--text-secondary);">Domine o sistema de combos do OmniRoute: 18 estratégias de roteamento, auto-combos inteligentes, quota-share e playbooks para máxima performance e custo mínimo.</p>
+
+        <section class="mt-4">
+          <h2>🎯 O que é um Combo?</h2>
+          <p>Um <strong>combo</strong> é uma cadeia de modelos que o OmniRoute percorre automaticamente quando o modelo atual falha (quota esgotada, rate limit, erro, etc.). É a chave para o <strong>zero downtime</strong>.</p>
+          
+          <div class="alert-info">
+            <strong>💡 Exemplo básico:</strong> Seu combo é <code>[cc/claude-opus-4-7 → glm/glm-4.7 → if/kimi-k2-thinking]</code>. Se a quota do Claude acabar, ele muda para o GLM. Se o GLM acabar o budget, vai para o Kiro (grátis). Você nunca para de codar.
+          </div>
+          
+          <p>No dashboard, vá em <strong>Dashboard → Combos</strong> para criar, editar e ativar combos.</p>
+          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/screenshots/02-combos.png" alt="Combos Dashboard" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+        </section>
+
+        <section class="mt-4">
+          <h2>⚡ Zero-config: o poderoso <code>auto</code></h2>
+          <p>O <strong>Auto-Combo</strong> é o recurso flagship do OmniRoute. Em vez de definir manualmente a cadeia, você simplesmente define o modelo como <code>auto</code> (ou uma variante) e o OmniRoute constrói um combo virtual em tempo real, pontuando todos os providers conectados por 12 fatores.</p>
+          
+          <div class="card-tech">
+            <h3>Variantes do <code>auto</code></h3>
+            <div class="card-grid">
+              <div class="card-tech">
+                <h4><code>auto</code></h4>
+                <p>Balanceado padrão (LKGP - Last Known Good Path). Mantém o último provider que funcionou bem.</p>
+              </div>
+              <div class="card-tech">
+                <h4><code>auto/coding</code></h4>
+                <p>Quality-first weights otimizados para geração de código.</p>
+              </div>
+              <div class="card-tech">
+                <h4><code>auto/fast</code></h4>
+                <p>Prioriza menor latência primeiro.</p>
+              </div>
+              <div class="card-tech">
+                <h4><code>auto/cheap</code></h4>
+                <p>Prioriza menor custo por token primeiro.</p>
+              </div>
+              <div class="card-tech">
+                <h4><code>auto/offline</code></h4>
+                <p>Prioriza o provider com mais quota/rate-limit headroom restante.</p>
+              </div>
+              <div class="card-tech">
+                <h4><code>auto/smart</code></h4>
+                <p>Quality-first + 10% de exploração para descobrir melhores models.</p>
+              </div>
+            </div>
+          </div>
+
+<div class="alert-success">
+            <strong>✅ Como ativar:</strong> No dashboard, vá em <strong>Providers → [seu provider] → Keys → Edit Key</strong> e configure os parâmetros de Quota-Share.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧪 Playbooks Práticos</h2>
+          <p>Combinações testadas e otimizadas para diferentes cenários de uso.</p>
+
+          <div class="card-tech">
+            <h3>Playbook A: Maximizar assinatura + backup barato</h3>
+            <pre><code>Combo: "maximize-claude"
+  1. cc/claude-opus-4-7          ← sua assinatura Claude Pro
+  2. glm/glm-4.7                 ← barato ($0.6/1M tokens)
+  3. if/kimi-k2-thinking         ← grátis (Kiro)
+
+Custo mensal: ~$20 + pouco gasto backup
+Resultado: alta qualidade, quase zero interrupções</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Playbook B: Stack 100% grátis ($0/mês)</h3>
+            <pre><code>Combo: "free-forever"
+  1. if/kimi-k2-thinking         ← ilimitado (Kiro)
+  2. qw/qwen3-coder-plus         ← ilimitado (Qwen)
+
+Custo mensal: $0
+Resultado: workflow de codificação gratuito, sem downtime</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Playbook C: Always-on para produção</h3>
+            <pre><code>Combo: "always-on"
+  1. cc/claude-opus-4-7          ← assinatura
+  2. cx/gpt-5.5-codex            ← Codex Pro
+  3. glm/glm-5.1                 ← barato
+  4. minimax/MiniMax-M2.1        ← barato ($0.2/1M)
+  5. if/kimi-k2-thinking         ← grátis ilimitado
+
+Resultado: profundidade de fallback para workloads críticos</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Playbook D: Agent ops com MCP + A2A</h3>
+            <pre><code>1) Iniciar MCP: `omniroute --mcp`
+2) Enviar tarefas A2A: POST /a2a com message/send
+3) Monitorar: Dashboard → Endpoints → MCP/A2A tabs
+4) Alternar serviços: status inline nos cards
+
+Workflow completo: ferramentas → MCP → agentes A2A → orquestração</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🛡️ Resilience Built-in</h2>
+          <p>O sistema de combos se beneficia de 3 camadas de tolerância a falhas:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Camada</th>
+                <th>Escopo</th>
+                <th>O que faz</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>🔌 Circuit Breaker</td>
+                <td>provider inteiro</td>
+                <td>Para de bater num provider falhando; auto-probes para recuperar</td>
+              </tr>
+              <tr>
+                <td>💤 Connection Cooldown</td>
+                <td>conta/key</td>
+                <td>Skippa uma key rate-limitada enquanto outras servem</td>
+              </tr>
+              <tr>
+                <td>🎯 Model Lockout</td>
+                <td>provider + model</td>
+                <td>Quarentena só o modelo com quota limitada, não o provider todo</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/diagrams/combo-always-on.svg" alt="Combo Always-On Diagram" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="conectar-agentes.html" style="color: var(--text-secondary);">← Conectar Agentes</a>
+          <a href="free-tiers.html" class="text-cyan" style="font-weight: 600;">Próximo: Providers Gratuitos →</a>
+        </div>
+
+        <section class="faq-section">
+          <h2>❓ Perguntas Frequentes</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  Qual a diferença entre priority e cost-optimized?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <code>priority</code> segue a ordem exata que você define (primeiro é sempre preferido). <code>cost-optimized</code> ignora a ordem e escolhe o provider mais barato entre os disponíveis, ideal quando você quer minimizar custos independentemente da ordem.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Posso usar context-relay com qualquer combo?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim! <code>context-relay</code> transfere o histórico da conversa entre providers diferentes. Útil para sessões longas onde você quer usar um provider barato para o início e outro mais potente para o fim. Funciona com qualquer combo que tenha múltiplos passos.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  O que é fusion strategy?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <code>fusion</code> envia a mesma requisição para múltiplos models simultaneamente (fan-out) e um "juiz" sintetiza a melhor resposta. Excelente para aumentar confiabilidade e qualidade em tarefas críticas.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  Como saber qual modelo está sendo usado?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  No Dashboard → Analytics, veja a tabela de providers com success rates e requests. Também há logs detalhados em <strong>Logs → Request Logs</strong>. O header <code>X-Provider</code> na resposta indica qual provider foi usado naquela requisição.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+
+        <section class="mt-4">
+          <h2>🎛️ As 18 Estratégias de Roteamento</h2>
+          <p>Ao construir combos customizados no dashboard, você pode escolher entre <strong>18 estratégias diferentes</strong> para cada passo do combo. Estratégias definem como escolher o próximo modelo na cadeia.</p>
+          
+          <div class="card-tech">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Estratégia</th>
+                  <th>O que faz</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><code>priority</code></td>
+                  <td>Lista ordenada — esgota cada alvo antes de passar para o próximo (ideal para fallback garantido).</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><code>fill-first</code></td>
+                  <td>Preenche a quota de cada alvo completamente antes de passar para o próximo.</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><code>weighted</code></td>
+                  <td>Escolha aleatória ponderada por peso definido por você.</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><code>round-robin</code></td>
+                  <td>Cicla pelos alvos na ordem definida.</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><code>p2c</code></td>
+                  <td>Power-of-two-choices: escolhe 2 aleatoriamente e escolhe o menos carregado.</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td><code>least-used</code></td>
+                  <td>Escolhe o alvo com menor uso atual (menor carga).</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td><code>random</code></td>
+                  <td>Escolha aleatória uniforme (deduplicada — evita repetir o mesmo imediatamente).</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td><code>strict-random</code></td>
+                  <td>Escolha aleatória pura (pode repetir o mesmo consecutivamente).</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td><code>cost-optimized</code></td>
+                  <td>Minimiza custo por requisição usando precificação em tempo real do catálogo.</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td><code>headroom</code></td>
+                  <td>Escolhe o alvo com maior quota restante (mais "espaço para respirar").</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td><code>reset-window</code></td>
+                  <td>Prefere o alvo cuja janela de reset de quota estiver mais próxima.</td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td><code>reset-aware</code></td>
+                  <td>Ranked por tempo de reset — janelas curtas primeiro (boa para quotas horárias/diárias).</td>
+                </tr>
+                <tr>
+                  <td>13</td>
+                  <td><code>context-relay</code></td>
+                  <td>Transfere contexto entre alvos para conversas longas (evita perda de histórico).</td>
+                </tr>
+                <tr>
+                  <td>14</td>
+                  <td><code>context-optimized</code></td>
+                  <td>Escolhe o melhor ajuste para o tamanho atual do contexto (prompt size).</td>
+                </tr>
+                <tr>
+                  <td>15</td>
+                  <td><code>lkgp</code></td>
+                  <td>Last-Known-Good Path — grudento no último alvo que funcionou (padrão do <code>auto</code>).</td>
+                </tr>
+                <tr>
+                  <td>16</td>
+                  <td><code>auto</code></td>
+                  <td>Live scoring em 12 fatores (health, quota, cost, latency, success rate, freshness...).</td>
+                </tr>
+                <tr>
+                  <td>17</td>
+                  <td><code>fusion</code></td>
+                  <td>Espalha para um painel de models + um juiz sintetiza uma resposta (como ensemble voting).</td>
+                </tr>
+                <tr>
+                  <td>18</td>
+                  <td><code>pipeline</code></td>
+                  <td>Encadeia etapas — saída de um alimenta a entrada do próximo (para tarefas complexas).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Dica:</strong> Estratégias podem ser misturadas e combinadas por passo do combo. Ex: <code>[priority → cost-optimized → context-relay]</code>.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚖️ Quota-Share: Compartilhamento Inteligente de Assinatura</h2>
+          <p>Recurso <strong>NOVO</strong> para equipes que compartilham a mesma conta upstream (ex: um plano Codex Pro usado por 3 desenvolvedores).</p>
+          
+          <div class="card-tech">
+            <p>Em vez de uma conta ficar sem quota por causa de um pico de uso de um membro, o Quota-Share distribui o quota baseado em pesos:</p>
+            
+            <div class="card-grid">
+              <div class="card-tech">
+                <h4>⚖️ Allocation weight</h4>
+                <p>Fatia da quota de cada key — ex: <code>alice 50 / bob 30 / ci-bot 20</code></p>
+              </div>
+              <div class="card-tech">
+                <h4>📐 Dimensions</h4>
+                <p>O que medir: <code>%</code> (tempo), <code>requests</code>, <code>tokens</code>, <code>$</code> — por janela <code>5h</code>, <code>7d</code> ou <code>per-model</code></p>
+              </div>
+              <div class="card-tech">
+                <h4>🚦 Policy</h4>
+                <p><code>hard</code> (bloqueia excesso), <code>soft</code> (deprioriza), <code>burst</code> (usa ocioso de outros)</p>
+              </div>
+              <div class="card-tech">
+                <h4>🧱 Cap</h4>
+                <p>Teto absoluto por key, independentemente do modo — protege contra vazamentos.</p>
+              </div>
+            </div>
+          </div>
+
+          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/diagrams/pool-fair-share.svg" alt="Quota Share Diagram" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+          
+          <div class="alert-success">
+            <strong>✅ Como ativar:</strong> No dashboard, vá em <strong>Providers → [seu provider] → Keys → Edit Key</strong> e configure os parâmetros de Quota-Share.
+          </div>
+        </section

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Como conectar Claude Code, Codex, Cursor, Cline, Copilot, OpenCode e outros agentes ao OmniRoute">
+  <title>Conectar Agentes de IA | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>🤖 Conectar Agentes de IA ao OmniRoute</h1>
+        <p class="lead" style="color: var(--text-secondary);">Todas as ferramentas de IA se conectam através do mesmo endpoint: <code>http://localhost:20128/v1</code>. Configure uma vez, use em todas.</p>
+
+        <section class="mt-4">
+          <h2>📋 Configuração Universal (Todas as Ferramentas)</h2>
+          <p>Independente da ferramenta, você sempre precisa de 3 valores:</p>
+          
+          <div class="card-tech">
+            <pre><code>Base URL: http://localhost:20128/v1
+API Key:  [sua key do Dashboard → Endpoints]
+Model:    if/kimi-k2-thinking  (ou auto, auto/coding, etc.)</code></pre>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Dica Pro:</strong> Use <code>auto</code> como modelo para deixar o OmniRoute escolher o melhor provider automaticamente baseado em qualidade, custo e quota disponível. Veja <a href="combos.html" class="text-cyan">Combos</a> para mais detalhes.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔧 Configuração por Ferramenta</h2>
+
+          <!-- OpenCode -->
+          <div class="card-tech mb-4">
+            <h3>🟣 OpenCode <span class="badge bg-secondary ms-2">⭐ 106K</span></h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Terminal AI agent moderno. Melhor integração nativa com OmniRoute.</p>
+            
+            <h4>Via Variáveis de Ambiente (Recomendado)</h4>
+            <pre><code>export ANTHROPIC_BASE_URL=http://localhost:20128/v1
+export OPENAI_BASE_URL=http://localhost:20128/v1
+export ANTHROPIC_API_KEY=sua_key_do_omniroute
+export OPENAI_API_KEY=sua_key_do_omniroute
+
+# Inicie o OpenCode
+opencode</code></pre>
+            
+            <h4>Via Config File</h4>
+            <pre><code># ~/.config/opencode/config.json
+{
+  "providers": {
+    "anthropic": {
+      "baseUrl": "http://localhost:20128/v1",
+      "apiKey": "sua_key_do_omniroute"
+    },
+    "openai": {
+      "baseUrl": "http://localhost:20128/v1", 
+      "apiKey": "sua_key_do_omniroute"
+    }
+  },
+  "model": "auto/coding"
+}</code></pre>
+          </div>
+
+          <!-- Codex CLI -->
+          <div class="card-tech mb-4">
+            <h3>🟢 Codex CLI <span class="badge bg-secondary ms-2">⭐ 60.8K</span></h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">CLI oficial da OpenAI. Funciona perfeitamente via Responses API do OmniRoute.</p>
+            
+            <h4>Variáveis de Ambiente</h4>
+            <pre><code>export OPENAI_BASE_URL=http://localhost:20128/v1
+export OPENAI_API_KEY=sua_key_do_omniroute
+
+# Inicie o Codex
+codex</code></pre>
+            
+            <h4>Config via TOML</h4>
+            <pre><code># ~/.codex/config.toml
+[model]
+provider = "openai"
+base_url = "http://localhost:20128/v1"
+api_key = "sua_key_do_omniroute"
+model = "auto/coding"</code></pre>
+            
+            <div class="alert-success">
+              <strong>✅ Suporte completo:</strong> O OmniRoute implementa a <strong>Responses API</strong> do OpenAI, necessária para o Codex CLI funcionar corretamente.
+            </div>
+          </div>
+
+          <!-- Claude Code -->
+          <div class="card-tech mb-4">
+            <h3>🟣 Claude Code <span class="badge bg-secondary ms-2">⭐ 67.3K</span></h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Terminal agent da Anthropic. Requer configuração via variáveis de ambiente.</p>
+            
+            <h4>Variáveis de Ambiente</h4>
+            <pre><code>export ANTHROPIC_BASE_URL=http://localhost:20128/v1
+export ANTHROPIC_API_KEY=sua_key_do_omniroute
+
+# Inicie o Claude Code
+claude</code></pre>
+            
+            <h4>Config no .bashrc/.zshrc (Persistente)</h4>
+            <pre><code># Adicione ao seu ~/.bashrc ou ~/.zshrc
+export ANTHROPIC_BASE_URL=http://localhost:20128/v1
+export ANTHROPIC_API_KEY=sua_key_do_omniroute
+# Modelo padrão opcional
+export ANTHROPIC_MODEL=auto/coding</code></pre>
+            
+            <div class="alert-info">
+              <strong>ℹ️ Nota:</strong> O OmniRoute faz tradução automática de formato OpenAI ↔ Anthropic. O Claude Code acha que está falando com a API da Anthropic, mas o OmniRoute roteia para qualquer provider.
+            </div>
+          </div>
+
+          <!-- Cursor -->
+          <div class="card-tech mb-4">
+            <h3>🔵 Cursor <span class="badge bg-secondary ms-2">IDE Editor</span></h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Editor VS Code forkado com IA integrada. Configure nas Settings.</p>
+            
+            <h4>Via UI (Settings → Models)</h4>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Abra <strong>Settings (Ctrl/Cmd + ,)</strong></li>
+              <li>Busque por <strong>"Models"</strong> ou <strong>"OpenAI"</strong></li>
+              <li>Adicione um novo modelo customizado:</li>
+            </ol>
+            <pre><code>Name: OmniRoute Auto
+Base URL: http://localhost:20128/v1
+API Key: sua_key_do_omniroute
+Model: auto/coding</code></pre>
+            
+            <h4>Via settings.json</h4>
+            <pre><code># No settings.json do Cursor
+"cursor.chat.models": [
+  {
+    "name": "OmniRoute Auto",
+    "provider": "openai",
+    "baseURL": "http://localhost:20128/v1",
+    "apiKey": "sua_key_do_omniroute",
+    "model": "auto/coding"
+  }
+]</code></pre>
+          </div>
+
+          <!-- Cline -->
+          <div class="card-tech mb-4">
+            <h3>🟠 Cline <span class="badge bg-secondary ms-2">VS Code Extension</span></h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Extensão VS Code popular para agentes de IA. Suporte nativo a OpenAI-compatible endpoints.</p>
+            
+            <h4>Configuração</h4>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Abra Cline (ícone na barra lateral do VS Code)</li>
+              <li>Clique no ícone de configurações (engrenagem)</li>
+              <li>Em <strong>API Provider</strong>, selecione <strong>"OpenAI Compatible"</strong></li>
+              <li>Preencha:</li>
+            </ol>
+            <pre><code>Base URL: http://localhost:20128/v1
+API Key: sua_key_do_omniroute
+Model: auto/coding</code></pre>
+          </div>
+
+          <!-- GitHub Copilot -->
+          <div class="card-tech mb-4">
+            <h3>🐙 GitHub Copilot <span class="badge bg-secondary ms-2">VS Code / IDEs</span></h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Configure via <code>chatLanguageModels.json</code> do VS Code. O dashboard do OmniRoute tem gerador automático.</p>
+            
+            <h4>Método 1: Gerador do Dashboard (Mais Fácil)</h4>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Vá em <strong>Dashboard → CLI Tools</strong></li>
+              <li>Selecione os modelos que quer disponibilizar no Copilot</li>
+              <li>Clique em <strong>"Generate Copilot Config"</strong></li>
+              <li>Copie o JSON gerado</li>
+            </ol>
+            
+            <h4>Método 2: Manual</h4>
+            <pre><code># Crie/edite: ~/.vscode/chatLanguageModels.json
+{
+  "models": [
+    {
+      "id": "omniroute-auto",
+      "name": "OmniRoute Auto",
+      "model": "auto/coding",
+      "provider": "openai",
+      "baseURL": "http://localhost:20128/v1",
+      "apiKey": "sua_key_do_omniroute"
+    },
+    {
+      "id": "omniroute-claude",
+      "name": "OmniRoute Claude",
+      "model": "if/kimi-k2-thinking",
+      "provider": "anthropic",
+      "baseURL": "http://localhost:20128/v1",
+      "apiKey": "sua_key_do_omniroute"
+    }
+  ]
+}</code></pre>
+            
+            <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/screenshots/07-cli-tools.png" alt="CLI Tools Dashboard" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+          </div>
+
+          <!-- OpenClaw / NanoBot / Outras -->
+          <div class="card-tech mb-4">
+            <h3>🔧 Outras Ferramentas Compatíveis</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Qualquer ferramenta que suporte OpenAI-compatible API ou Anthropic-compatible API funciona:</p>
+            
+            <table>
+              <thead>
+                <tr>
+                  <th>Ferramenta</th>
+                  <th>Configuração</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>OpenClaw (205K ⭐)</td>
+                  <td>ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY</td>
+                </tr>
+                <tr>
+                  <td>NanoBot (20.9K ⭐)</td>
+                  <td>OPENAI_BASE_URL + OPENAI_API_KEY</td>
+                </tr>
+                <tr>
+                  <td>PicoClaw (14.6K ⭐)</td>
+                  <td>ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY</td>
+                </tr>
+                <tr>
+                  <td>ZeroClaw (9.9K ⭐)</td>
+                  <td>ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY</td>
+                </tr>
+                <tr>
+                  <td>IronClaw (2.1K ⭐)</td>
+                  <td>OPENAI_BASE_URL + OPENAI_API_KEY</td>
+                </tr>
+                <tr>
+                  <td>Kilo Code (15.5K ⭐)</td>
+                  <td>OpenAI Compatible nas configurações</td>
+                </tr>
+                <tr>
+                  <td>Antigravity</td>
+                  <td>ANTHROPIC_BASE_URL + ANTHROPIC_API_KEY</td>
+                </tr>
+                <tr>
+                  <td>Continue (VS Code)</td>
+                  <td>OpenAI Compatible provider</td>
+                </tr>
+                <tr>
+                  <td>Roo Code / Aider</td>
+                  <td>ANTHROPIC_BASE_URL / OPENAI_BASE_URL</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🌐 Endpoint Cloud (Opcional)</h2>
+          <p>Se você não quer rodar o OmniRoute localmente, pode usar o endpoint cloud gerenciado:</p>
+          
+          <div class="card-tech">
+            <pre><code>Base URL: http://cloud.omniroute.online/v1
+API Key:  [sua key do dashboard local ou crie conta no cloud]
+Model:    auto/coding</code></pre>
+            
+            <div class="alert-warning">
+              <strong>⚠️ Privacidade:</strong> O endpoint cloud processa suas requisições nos servidores do OmniRoute. Para máxima privacidade e controle (seus dados nunca saem do seu PC), use <code>http://localhost:20128/v1</code>.
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧪 Teste Rápido da Conexão</h2>
+          <p>Verifique se sua ferramenta está conectada corretamente:</p>
+          
+          <div class="card-tech">
+            <h3>Teste via curl (qualquer terminal)</h3>
+            <pre><code>curl http://localhost:20128/v1/chat/completions \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "auto/coding",
+    "messages": [{"role": "user", "content": "Diga olá em uma linha"}]
+  }'</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Teste via Dashboard</h3>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Vá em <strong>Dashboard → Translator</strong></li>
+              <li>Selecione <strong>"Playground"</strong></li>
+              <li>Escolha um modelo e teste a tradução de formato em tempo real</li>
+            </ol>
+            <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/screenshots/05-translator.png" alt="Translator Playground" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1rem;">
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🛠️ Solução de Problemas Comuns</h2>
+          
+          <div class="accordion" id="troubleshootingAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts1">
+                  A ferramenta diz "Connection refused" ou "ECONNREFUSED"
+                </button>
+              </h2>
+              <div id="ts1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  O OmniRoute não está rodando. Execute <code>omniroute</code> no terminal e verifique se aparece "Server running on http://localhost:20128". Se estiver usando Docker, verifique <code>docker ps</code>.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts2">
+                  Erro "Invalid API Key" ou 401
+                </button>
+              </h2>
+              <div id="ts2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  A API key não confere. Vá no Dashboard → Endpoints, verifique se a key está correta e não expirou. Lembre-se: a key do OmniRoute é diferente da key do provider (OpenAI, Anthropic, etc.).
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts3">
+                  "Model not found" ou 404
+                </button>
+              </h2>
+              <div id="ts3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  O modelo que você especificou não existe nos providers conectados. Use <code>auto</code> para deixar o OmniRoute escolher, ou verifique em Dashboard → Providers quais modelos estão disponíveis. Formato: <code>provider/model</code> (ex: <code>if/kimi-k2-thinking</code>, <code>openai/gpt-4o</code>).
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts4">
+                  Cursor/Copilot não mostra o modelo customizado
+                </button>
+              </h2>
+              <div id="ts4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  Reinicie o VS Code/Cursor após alterar settings.json. Para o Copilot, o arquivo <code>chatLanguageModels.json</strong> deve estar em <code>~/.vscode/</code> (não no workspace). Use o gerador no Dashboard → CLI Tools.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts5">
+                  A ferramenta funciona mas parece lenta
+                </button>
+              </h2>
+              <div id="ts5" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  Verifique se você está usando <code>auto/fast</code> para priorizar latência. No Dashboard → Health, veja se algum provider está em cooldown ou circuit breaker. Tente conectar providers mais rápidos (Groq, Cerebras, Kiro).
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="primeiros-passos.html" style="color: var(--text-secondary);">← Configuração Inicial</a>
+          <a href="combos.html" class="text-cyan" style="font-weight: 600;">Próximo: Combos e Auto-Fallback →</a>
+        </div>
+
+        <section class="faq-section">
+          <h2>❓ Perguntas Frequentes</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  Posso usar múltiplas ferramentas ao mesmo tempo?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim! O OmniRoute foi feito para isso. Você pode ter Claude Code no terminal, Cursor no editor, e Cline no VS Code — todos apontando para <code>http://localhost:20128/v1</code> com a mesma ou diferentes API keys. O OmniRoute gerencia quota, rate limits e fallback para todas simultaneamente.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Preciso de API keys diferentes para cada ferramenta?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Não necessariamente. Pode usar a mesma key em todas. Mas recomendamos criar keys separadas por ferramenta (ex: "cursor-key", "claude-code-key") para rastrear uso individual no Dashboard → Analytics.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Como uso modelos específicos (ex: GPT-4o, Claude Opus)?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Use o prefixo do provider: <code>openai/gpt-4o</code>, <code>anthropic/claude-opus-4-7</code>, <code>if/kimi-k2-thinking</code>. A lista completa está no Dashboard → Providers (clique no provider para ver modelos). Ou use <code>auto</code> para escolha automática.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  O OmniRoute funciona com GitHub Copilot Chat?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim! Configure via <code>chatLanguageModels.json</code> (o Dashboard → CLI Tools tem gerador automático). Selecione os modelos que quer expor ao Copilot e cole o JSON em <code>~/.vscode/chatLanguageModels.json</code>.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                  Funciona em rede local (outro PC na mesma WiFi)?
+                </button>
+              </h2>
+              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim! Inicie com <code>PORT=20128 DASHBOARD_PORT=20129 HOST=0.0.0.0 omniroute</code>. No outro PC, use <code>http://IP_DO_SEU_PC:20128/v1</code>. <strong>IMPORTANTE:</strong> Configure API key + rate limiter + IP allowlist no Dashboard → Settings antes de expor na rede.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

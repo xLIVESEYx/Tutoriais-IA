@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guia completo da compressão de tokens no OmniRoute: RTK + Caveman, economia de 15-95%, inflation guard, tipos de compression e quando usar">
+  <title>🗜️ Compressão de Tokens | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>🗜️ Compressão de Tokens</h1>
+        <p class="lead" style="color: var(--text-secondary);">O OmniRoute economiza 15-95% de tokens com RTK + Caveman, evitando limites de contexto e reduzindo custos.</p>
+
+        <section class="mt-4">
+          <h2>🎯 Por que compressão de tokens importa?</h2>
+          <p>Cada modelo tem um tamanho máximo de contexto (ex: 32K, 128K, 1M tokens). Quando sua conversa ultrapassa esse limite, o modelo corta partes antigas da mensagem — podendo causar:</p>
+          
+          <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+            <li>⚠️ Corte de histórico — partes antigas da conversa são removidas abruptamente</li>
+            <li>⚠️ Context shift — mudança repentina no "ponto de partida" da resposta</li>
+            <li>⚠️ Chamadas truncadas — resposta interrompida antes de terminar</li>
+          </ul>
+          
+          <div class="alert-info">
+            <strong>💡 Problema real:</strong> Modelos como Claude, GPT-4o e Gemini frequentemente processam apenas os últimos ~24K tokens, mesmo quando reportam suporte a 32K/1M. Tool outputs (git diff, logs) consomem quota rapidamente.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔧 RTK + Caveman Stacked Compression</h2>
+          <p>O OmniRoute usa <strong>duas camadas de compressão</strong> em sequência (stacked) para reduzir tokens de forma inteligente:</p>
+          
+          <div class="card-tech">
+            <h3>📊 RTK (Ranked Token Killer)</h3>
+            <p>Primeira camada — remove tokens "mortos" ou redundantes:</p>
+            <ul style="color: var(--text-secondary); margin-left: 1rem;">
+              <li><strong>Boilerplate detection:</strong> Identifica e reduz estruturas repetitivas</li>
+              <li><strong>Output pruning:</strong> Remove tool outputs redundantes</li>
+              <li><strong>Log compression:</strong> Comprime logs de erro/extensos</li>
+              <li><strong>Git diff shrink:</strong> Reduz diffs sem perder informação essencial</li>
+            </ul>
+          </div>
+
+          <div class="card-tech">
+            <h3>🪨 Caveman Compression</h3>
+            <p>Segunda camada — redução agressiva para linguagens específicas:</p>
+            <ul style="color: var(--text-secondary); margin-left: 1rem;">
+              <li><strong>Deduplication:</strong> Remove blocos idênticos consecutivos</li>
+              <li><strong>Ultra mode:</strong> Compressão máxima para código/tool outputs</li>
+              <li><strong>Language packs:</strong> Regras específicas para DE, FR, JA, PT, ZH, EN</li>
+              <li><strong>Chinese (文言/现代):</strong> Modo wenyan para chinês clássico e moderno</li>
+            </ul>
+          </div>
+
+          <div class="alert-success">
+            <strong>✅ Resultado:</strong> Economia média de 58% em sessões tool-heavy, até 95% em inputs altamente repetitivos.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🛡️ Inflation Guard</h2>
+          <p><strong>Novo em v3.8:</strong> Por padrão, o OmniRoute descarta o resultado comprimido e envia o original se a compressão <em>aumentaria</em> o tamanho.</p>
+          
+          <div class="card-tech">
+            <h3>Como funciona</h3>
+            <pre><code># Pseudo-código da lógica
+if compressed_size > original_size:
+    send original_payload  # Nenhum overhead
+else:
+    send compressed_payload</code></pre>
+          </div>
+          
+          <div class="alert-info">
+            <strong>💡 Por que importa:</strong> Muitos algoritmos de compressão funcionam bem em textos longos, mas podem <em>aumentar</em> arquivos pequenos ou código já otimizado. O guard garante que você nunca pague mais por tentar economizar.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📊 Savings por Tipo de Conteúdo</h2>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo de Conteúdo</th>
+                <th>Economia Típica</th>
+                <th>Estratégia Recomendada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Git diffs extensos</td>
+                <td>60-80%</td>
+                <td>Caveman ultra + dedup</td>
+              </tr>
+              <tr>
+                <td>Logs de erro/stack traces</td>
+                <td>40-60%</td>
+                <td>RTK log filter</td>
+              </tr>
+              <tr>
+                <td>Estruturas JSON repetitivas</td>
+                <td>50-75%</td>
+                <td>RTK + Caveman dedup</td>
+              </tr>
+              <tr>
+                <td>Code blocks (JS/TS/Python)</td>
+                <td>30-50%</td>
+                <td>Caveman language pack</td>
+              </tr>
+              <tr>
+                <td>Plain text/conversation</td>
+                <td>15-30%</td>
+                <td>RTK basic</td>
+              </tr>
+              <tr>
+                <td>Outputs já compactos</td>
+                <td>0% (inflation guard)</td>
+                <td>Nenhuma compressão</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚙️ Configurações de Compressão</h2>
+          
+          <div class="card-tech">
+            <p>Configure via Dashboard → Settings → Compression ou via <code>settings.json</code> em <code>~/.omniroute/</code>:</p>
+            <pre><code>{
+  "compression": {
+    "enabled": true,
+    "engine": "rtk+caveman",  // ou "rtk" ou "caveman" ou "none"
+    "inflation_guard": true,
+    "language": "auto",  // pt, en, de, fr, ja, zh, auto
+    "dedup_enabled": true,
+    "git_diff_minify": true,
+    "log_minify": true
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📈 Dashboard de Compressão</h2>
+          <p>Acompanhe estatísticas de compressão em tempo real:</p>
+          
+          <div class="card-tech">
+            <ul style="color: var(--text-secondary); margin-left: 1rem;">
+              <li>Tokens comprimidos hoje (counter)</li>
+              <li>% médio de economia</li>
+              <li>Input/output ratio por provider</li>
+              <li>Histórico diário (gráfico)</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧪 Teste de Compressão</h2>
+          
+          <div class="card-tech">
+            <h3>Ver compressão no dashboard</h3>
+            <pre><code>Dashboard → Settings → Compression
+# Veja: tokens hoje, % economia, gráfico</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Forçar compressão via header</h3>
+            <pre><code>curl http://localhost:20128/v1/chat/completions \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "X-OmniRoute-Compress: caveman" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"auto","messages":[...]}'</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>💡 Dicas para Máxima Economia</h2>
+          <ol style="color: var(--text-secondary);">
+            <li><strong>Ative compressão global:</strong> Dashboard → Settings → Compression = ON</li>
+            <li><strong>Use combos "smart":</strong> <code>auto/smart</code> explora melhores models</li>
+            <li><strong>Monitore no analytics:</strong> Veja qual model tem melhor compression ratio</li>
+            <li><strong>Ajuste inflation guard:</strong> Desative temporariamente para testes A/B</li>
+            <li><strong>Combine com quota-share:</strong> Providers baratos + compressão = $0</li>
+          </ol>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="free-tiers.html" style="color: var(--text-secondary);">← Providers Gratuitos</a>
+          <a href="mcp-a2a.html" class="text-cyan" style="font-weight: 600;">Próximo: MCP Server & A2A →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

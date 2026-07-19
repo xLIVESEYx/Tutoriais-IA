@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Como contornar bloqueio regional de provedores de IA com proxy de 3 níveis, TLS fingerprinting e CLI fingerprint matching no OmniRoute">
+  <title>🌍 Proxy e Desbloqueio Regional | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>🌍 Proxy e Desbloqueio Regional</h1>
+        <p class="lead" style="color: var(--text-secondary);">Como o OmniRoute contorna bloqueios geográficos (ex: <code>unsupported_country_region_territory</code>) com proxy de 3 níveis, TLS fingerprint spoofing e CLI fingerprint matching.</p>
+
+        <section class="mt-4">
+          <h2>🚫 O Problema: Bloqueio Regional</h2>
+          <p>Provedores como <strong>OpenAI/Codex</strong> bloqueiam acesso de certos países/regiões. Usuários recebem erros como:</p>
+          
+          <div class="card-tech">
+            <pre><code>unsupported_country_region_territory
+Error: OAuth failed - your region is not supported
+The API is not available in your country</code></pre>
+          </div>
+
+          <p style="margin-top: 1rem;">Isso afeta especialmente desenvolvedores em países em desenvolvimento, impedindo acesso a ferramentas de IA essenciais.</p>
+        </section>
+
+        <section class="mt-4">
+          <h2>🛡️ Solução do OmniRoute: 3 Níveis de Proxy</h2>
+          <p>O OmniRoute configura proxy em <strong>3 níveis hierárquicos</strong>, cada um com granularidade diferente:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Nível</th>
+                <th>Escopo</th>
+                <th>Badge</th>
+                <th>Casos de Uso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Global</strong></td>
+                <td>Todo o tráfego</td>
+                <td>🟢 Verde</td>
+                <td>VPN corporativa, proxy único para tudo</td>
+              </tr>
+              <tr>
+                <td><strong>2. Por Provider</strong></td>
+                <td>Um provider específico</td>
+                <td>🟡 Amarelo</td>
+                <td>OpenAI via proxy, DeepSeek direto</td>
+              </tr>
+              <tr>
+                <td><strong>3. Por Connection/Key</strong></td>
+                <td>Uma conta/chave específica</td>
+                <td>🔵 Azul</td>
+                <td>Conta X via proxy Brasil, Conta Y direta</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="alert-info">
+            <strong>💡 Visual no Dashboard:</strong> Cada conexão mostra badge colorido indicando qual nível de proxy está ativo + IP de saída. Configure em <strong>Dashboard → Providers → [Provider] → Connection → Proxy</strong>.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔧 Configurando Proxy</h2>
+          
+          <div class="card-tech">
+            <h3>Via Dashboard (Recomendado)</h3>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Vá em <strong>Providers</strong> e clique no provider desejado</li>
+              <li>Clique na conexão (conta) específica</li>
+              <li>Na seção <strong>Proxy Config</strong>, preencha:</li>
+            </ol>
+            <pre><code>Proxy URL: http://user:pass@proxy.example.com:8080
+# ou SOCKS5:
+Proxy URL: socks5://user:pass@proxy.example.com:1080</code></pre>
+            <p style="margin-top: 1rem;">✅ Suporta <strong>HTTP/HTTPS</strong> e <strong>SOCKS5</strong></p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Via Variáveis de Ambiente (Global)</h3>
+            <pre><code># Proxy HTTP/HTTPS global
+export HTTP_PROXY=http://proxy.example.com:8080
+export HTTPS_PROXY=http://proxy.example.com:8080
+
+# Ou no .env do OmniRoute
+HTTP_PROXY=http://proxy.example.com:8080
+HTTPS_PROXY=http://proxy.example.com:8080
+
+# Inicie
+omniroute</code></pre>
+          </div>
+
+          <div class="alert-warning">
+            <strong>⚠️ OAuth também passa pelo proxy:</strong> O fluxo OAuth (Claude Code, Codex, Copilot) é roteado pelo proxy configurado, resolvendo <code>unsupported_country_region_territory</code> durante autenticação.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🥷 TLS Fingerprint Spoofing (JA3/JA4)</h2>
+          <p>Muitos provedores detectam bots/clientes não-nativos via <strong>TLS fingerprint</strong> (ordem de cipher suites, extensões, etc.). O OmniRoute usa <strong>wreq-js</strong> para imitar fingerprint de navegador real.</p>
+          
+          <div class="card-tech">
+            <h3>Como funciona</h3>
+            <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>Intercepta handshake TLS de saída</li>
+              <li>Reordena cipher suites para combinar com Chrome/Firefox</li>
+              <li>Adiciona/remove extensões TLS para matching</li>
+              <li>Gera JA3/JA4 fingerprint indistinguível de navegador</li>
+            </ul>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Ativado automaticamente quando proxy está configurado. Funciona para <strong>qualquer provider</strong>.</p>
+          </div>
+
+          <div class="alert-success">
+            <strong>✅ Resultado:</strong> Drasticamente reduz risco de flag de conta. O IP do proxy é preservado — você ganha <strong>stealth + IP masking</strong> simultaneamente.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔏 CLI Fingerprint Matching</h2>
+          <p>Provedores também detectam clientes via <strong>estrutura da requisição HTTP</strong> (ordem de headers, formatação JSON, campos extras). O OmniRoute reordena headers e body para matchar binários nativos:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>CLI</th>
+                <th>O que o OmniRoute Imita</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Claude Code</strong></td><td>Header order, Anthropic-Version, beta headers, cache-control</td></tr>
+              <tr><td><strong>Codex CLI</strong></td><td>OpenAI-Organization, User-Agent, request ID format</td></tr>
+              <tr><td><strong>GitHub Copilot</strong></td><td>Editor-Version, Copilot-Integration-ID, VS Code fingerprint</td></tr>
+              <tr><td><strong>OpenCode</strong></td><td>Custom headers, streaming format, tool call structure</td></tr>
+            </tbody>
+          </table>
+
+          <div class="alert-info">
+            <strong>💡 Ativação:</strong> Automático quando você usa variáveis de ambiente nativas (<code>ANTHROPIC_BASE_URL</code>, <code>OPENAI_BASE_URL</code>). O proxy IP + TLS stealth + CLI fingerprint = proteção máxima.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🌐 Proxy SOCKS5</h2>
+          <p>Suporte completo a SOCKS5 para roteamento avançado:</p>
+          
+          <div class="card-tech">
+            <h3>Exemplos de URL SOCKS5</h3>
+            <pre><code># Básico
+socks5://proxy.example.com:1080
+
+# Com autenticação
+socks5://user:pass@proxy.example.com:1080
+
+# SOCKS5h (resolve DNS no proxy - recomendado para anonimato)
+socks5h://user:pass@proxy.example.com:1080</code></pre>
+          </div>
+
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>Casos de Uso</h4>
+              <ul style="color: var(--text-secondary); margin-left: 1rem;">
+                <li>Tor/onion routing</li>
+                <li>SSH tunnels dinâmicos</li>
+                <li>Proxies residenciais rotativos</li>
+                <li>WireGuard/VPN split tunneling</li>
+              </ul>
+            </div>
+            <div class="card-tech">
+              <h4>Configuração no Dashboard</h4>
+              <p style="color: var(--text-secondary);">Mesmo campo "Proxy URL" — apenas use esquema <code>socks5://</code> ou <code>socks5h://</code>. Badge 🔵/🟡/🟢 aparece automaticamente.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>☁️ Guia: OAuth Remoto (VPS/Cloud/Docker)</h2>
+          <p>Rodar OmniRoute em servidor remoto requer configuração extra para OAuth funcionar:</p>
+          
+          <div class="card-tech">
+            <h3>Problema</h3>
+            <p>OAuth precisa de <code>redirect_uri</code> acessível. Em VPS/Docker, <code>localhost</code> não funciona do navegador do usuário.</p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Solução: Manual URL Mode</h3>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li>No Dashboard → Providers → [Provider] → Connection → OAuth Settings</li>
+              <li>Ative <strong>"Manual URL Mode"</strong></li>
+              <li>Configure <code>REDIRECT_URI=https://seu-dominio.com/callback</code></li>
+              <li>Configure DNS + Nginx/Caddy proxy reverso para <code>:20129</code> (dashboard port)</li>
+              <li>OAuth flui: Browser → Nginx → OmniRoute Dashboard → Provider</li>
+            </ol>
+          </div>
+
+          <div class="card-tech">
+            <h3>Nginx Config Exemplo</h3>
+            <pre><code>server {
+  listen 443 ssl;
+  server_name seu-dominio.com;
+
+  location / {
+    proxy_pass http://localhost:20129;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    
+    # WebSocket support para A2A/MCP
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+  }
+}</code></pre>
+          </div>
+
+          <div class="alert-info">
+            <strong>📖 Guia Completo:</strong> Veja <a href="https://github.com/diegosouzapw/OmniRoute/blob/release/v3.8.49/docs/guides/REMOTE_OAUTH_GUIDE.md" target="_blank" class="text-cyan">docs/guides/REMOTE_OAUTH_GUIDE.md</a> no GitHub para passo-a-passo com Google Cloud credentials.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>✅ Checklist de Desbloqueio</h2>
+          
+          <div class="card-tech">
+            <p>Siga em ordem até funcionar:</p>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem;">
+              <li><input type="checkbox" style="margin-right: 0.5rem;"> Proxy HTTP/SOCKS5 funcional (teste com <code>curl -x proxy http://ipinfo.io</code>)</li>
+              <li><input type="checkbox" style="margin-right: 0.5rem;"> Configure no nível correto (Global / Provider / Connection)</li>
+              <li><input type="checkbox" style="margin-right: 0.5rem;"> Badge de proxy aparece no dashboard (🟢/🟡/🔵)</li>
+              <li><input type="checkbox" style="margin-right: 0.5rem;"> Teste conexão do provider — deve mostrar IP do proxy</li>
+              <li><input type="checkbox" style="margin-right: 0.5rem;"> Teste OAuth (Claude Code/Codex) — deve autenticar via proxy</li>
+              <li><input type="checkbox" style="margin-right: 0.5rem;"> Faça uma request real — verifique IP de saída no dashboard</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔧 Troubleshooting</h2>
+          
+          <div class="accordion" id="troubleshootingAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts1">
+                  Proxy conecta mas OAuth falha com "redirect_uri_mismatch"
+                </button>
+              </h2>
+              <div id="ts1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  Configure <strong>Manual URL Mode</strong> no provider e use domínio real (não localhost). O OmniRoute usa <code>window.location.origin</code> automaticamente atrás de reverse proxy.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts2">
+                  Erro "Connection refused" no proxy
+                </button>
+              </h2>
+              <div id="ts2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  Verifique se o proxy aceita conexões do IP do servidor OmniRoute. Teste: <code>curl -x http://proxy:port http://httpbin.org/ip</code> do mesmo host.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts3">
+                  SOCKS5 não resolve DNS
+                </button>
+              </h2>
+              <div id="ts3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  Use <code>socks5h://</code> (com 'h' no final) para resolver DNS no lado do proxy, não localmente.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ts4">
+                  Conta ainda é flagrada mesmo com proxy
+                </button>
+              </h2>
+              <div id="ts4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                <div class="accordion-body">
+                  Verifique: 1) TLS fingerprint está ativo (padrão com proxy), 2) CLI fingerprint matching (use vars ANTHROPIC_BASE_URL/OPENAI_BASE_URL), 3) Proxy IP não está em lista negra conhecida, 4) Não reutilize conta em múltiplos locais simultaneamente.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="mcp-a2a.html" style="color: var(--text-secondary);">← MCP Server & A2A</a>
+          <a href="referencias.html" class="text-cyan" style="font-weight: 600;">Próximo: Referências e Comandos →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

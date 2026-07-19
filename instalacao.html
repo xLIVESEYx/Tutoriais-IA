@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Como instalar o OmniRoute via npm, Docker, Electron, Arch Linux e Termux">
+  <title>Instalação | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>📦 Instalação do OmniRoute</h1>
+        <p class="lead" style="color: var(--text-secondary);">Escolha o método de instalação que melhor se adapta ao seu ambiente. O mais rápido é via npm.</p>
+
+        <section class="mt-4">
+          <h2>🚀 Método 1: npm (Recomendado)</h2>
+          <p>A forma mais simples e rápida. Requer <a href="https://nodejs.org/" target="_blank" class="text-cyan">Node.js 18+</a> instalado.</p>
+          
+          <div class="card-tech">
+            <h3>Instalação global</h3>
+            <pre><code>npm install -g omniroute
+omniroute</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">✅ Dashboard abre em <code>http://localhost:20128</code><br>
+            ✅ API disponível em <code>http://localhost:20128/v1</code></p>
+          </div>
+
+          <div class="card-tech">
+            <h3>Usuários pnpm</h3>
+            <p>No pnpm v11, é necessário aprovar explicitamente os scripts de build nativo do <code>better-sqlite3</code> e <code>@swc/core</code>:</p>
+            <pre><code>pnpm add -g omniroute@latest --allow-build=better-sqlite3 --allow-build=@swc/core
+omniroute</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🐳 Método 2: Docker</h2>
+          <p>Para isolamento total e deploy em servidores. Imagem multi-plataforma (AMD64 + ARM64).</p>
+          
+          <div class="card-tech">
+            <h3>Docker Hub</h3>
+            <pre><code>docker run -d \
+  --name omniroute \
+  -p 20128:20128 \
+  -v omniroute-data:/root/.omniroute \
+  diegosouzapw/omniroute:latest</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Docker Compose</h3>
+            <p>Clone o repositório e use os profiles prontos:</p>
+            <pre><code>git clone https://github.com/diegosouzapw/OmniRoute.git
+cd OmniRoute
+
+# Profile base (sem CLI tools)
+docker compose up -d
+
+# Profile cli (com Claude Code, Codex, OpenClaw)
+docker compose --profile cli up -d</code></pre>
+          </div>
+
+          <div class="alert-info">
+            <strong>💡 Volumes importantes:</strong> O diretório <code>~/.omniroute</code> contém seu banco de dados, configurações e chaves criptografadas. Monte sempre como volume para persistir entre reinícios.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🖥️ Método 3: Electron Desktop App</h2>
+          <p>App nativo para Windows, macOS e Linux com system tray, auto-start e modo offline.</p>
+          
+          <div class="card-grid">
+            <div class="card-tech" style="text-align: center;">
+              <h3>Windows</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Baixe o <code>.exe</code> no GitHub Releases</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h3>macOS</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Baixe o <code>.dmg</code> no GitHub Releases</p>
+            </div>
+            <div class="card-tech" style="text-align: center;">
+              <h3>Linux</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Baixe o <code>.AppImage</code> no GitHub Releases</p>
+            </div>
+          </div>
+          
+          <p style="margin-top: 1rem; text-align: center;">
+            <a href="https://github.com/diegosouzapw/OmniRoute/releases" target="_blank" class="text-cyan">Ver releases no GitHub →</a>
+          </p>
+        </section>
+
+        <section class="mt-4">
+          <h2>🐧 Método 4: Arch Linux (AUR)</h2>
+          <p>Para usuários Arch Linux, existe um pacote AUR oficial que instala o OmniRoute e fornece um serviço systemd de usuário:</p>
+          
+          <div class="card-tech">
+            <pre><code>yay -S omniroute-bin
+systemctl --user enable --now omniroute.service</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📱 Método 5: Termux (Android)</h2>
+          <p>Rode o OmniRoute no seu Android via Termux — útil para uso móvel ou em dispositivos sem PC.</p>
+          
+          <div class="card-tech">
+            <pre><code>pkg update && pkg install nodejs
+npm install -g omniroute
+omniroute --no-open</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Acesse pelo navegador do celular em <code>http://localhost:20128</code></p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚙️ Configurações de Porta</h2>
+          
+          <div class="card-tech">
+            <h3>Modo padrão (API + Dashboard na mesma porta)</h3>
+            <pre><code>omniroute
+# API:       http://localhost:20128/v1
+# Dashboard: http://localhost:20128</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Split-port mode (recomendado para reverse proxy)</h3>
+            <pre><code>PORT=20128 DASHBOARD_PORT=20129 omniroute
+# API:       http://localhost:20128/v1
+# Dashboard: http://localhost:20129</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Outros argumentos do CLI</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Comando</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>omniroute</code></td>
+                  <td>Inicia o servidor (porta padrão 20128, API + dashboard)</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --port 3000</code></td>
+                  <td>Define a porta canônica/API para 3000</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --mcp</code></td>
+                  <td>Inicia o servidor MCP (transporte stdio)</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --no-open</code></td>
+                  <td>Não abre o navegador automaticamente</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --help</code></td>
+                  <td>Mostra a ajuda completa</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⏱️ Timeouts e Variáveis de Ambiente</h2>
+          <p>Para a maioria dos deployments, as duas variáveis abaixo são suficientes:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Variável</th>
+                <th>Default</th>
+                <th>Função</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>REQUEST_TIMEOUT_MS</code></td>
+                <td><code>600000</code></td>
+                <td>Timeout base para upstream, TLS e API bridge</td>
+              </tr>
+              <tr>
+                <td><code>STREAM_IDLE_TIMEOUT_MS</code></td>
+                <td>herda <code>REQUEST_TIMEOUT_MS</code></td>
+                <td>Gap máximo entre chunks de streaming antes de abortar</td>
+              </tr>
+              <tr>
+                <td><code>PORT</code></td>
+                <td><code>20128</code></td>
+                <td>Porta da API</td>
+              </tr>
+              <tr>
+                <td><code>DASHBOARD_PORT</code></td>
+                <td><code>20128</code></td>
+                <td>Porta do dashboard (em split-port mode)</td>
+              </tr>
+              <tr>
+                <td><code>PROVIDER_LIMITS_SYNC_INTERVAL_MINUTES</code></td>
+                <td><code>70</code></td>
+                <td>Intervalo de refresh do cache de quotas</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="alert-warning">
+            <strong>⚠️ Atenção:</strong> Se você roda o OmniRoute atrás de Nginx, Caddy ou Cloudflare, garanta que os timeouts do proxy sejam maiores que os timeouts do OmniRoute.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧪 Validação da Instalação</h2>
+          <p>Após instalar, valide que tudo está funcionando:</p>
+          
+          <div class="card-tech">
+            <h3>1. Verifique se o servidor responde</h3>
+            <pre><code>curl http://localhost:20128/v1/models</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>2. Teste o endpoint A2A (se habilitado)</h3>
+            <pre><code>curl http://localhost:20128/.well-known/agent.json</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>3. Gere relatório de sistema (para debug)</h3>
+            <pre><code>npm run system-info</code></pre>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Gera um arquivo <code>system-info.txt</code> com versão do Node, OS, CLI tools instaladas, status Docker/PM2 — útil para reportar bugs.</p>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔄 Desinstalação</h2>
+          <p>O OmniRoute oferece dois scripts de remoção limpa:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Comando</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>npm run uninstall</code></td>
+                <td>Remove o app, mas <strong>mantém</strong> DB e configurações em <code>~/.omniroute</code></td>
+              </tr>
+              <tr>
+                <td><code>npm run uninstall:full</code></td>
+                <td>Remove o app e <strong>apaga permanentemente</strong> todas as configurações, chaves e bancos de dados</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="alert-warning">
+            <strong>⚠️ Cuidado:</strong> <code>uninstall:full</code> é irreversível. Faça backup do diretório <code>~/.omniroute</code> antes.
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🛠️ Alternativa: Rodar do Source</h2>
+          <p>Para desenvolvedores que querem contribuir ou customizar:</p>
+          
+          <div class="card-tech">
+            <pre><code>git clone https://github.com/diegosouzapw/OmniRoute.git
+cd OmniRoute
+cp .env.example .env
+npm install
+PORT=20128 DASHBOARD_PORT=20129 NEXT_PUBLIC_BASE_URL=http://localhost:20129 npm run dev</code></pre>
+          </div>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="index.html" style="color: var(--text-secondary);">← Início</a>
+          <a href="primeiros-passos.html" class="text-cyan" style="font-weight: 600;">Próximo: Configuração Inicial →</a>
+        </div>
+
+        <section class="faq-section">
+          <h2>❓ Perguntas Frequentes</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  Qual versão do Node.js é necessária?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Node.js 18 ou superior. Recomendamos a versão LTS mais recente. Você pode verificar sua versão com <code>node --version</code>.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Preciso do Docker para usar o OmniRoute?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Não. Docker é opcional — útil para deploy em servidores ou isolamento. Para uso local no seu computador de desenvolvimento, basta usar npm: <code>npm install -g omniroute && omniroute</code>.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Como atualizar o OmniRoute?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Para npm: <code>npm update -g omniroute</code> ou <code>npm install -g omniroute@latest</code>. Para Docker: <code>docker pull diegosouzapw/omniroute:latest</code> e reinicie o container. Suas configurações ficam preservadas em <code>~/.omniroute</code>.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  Funciona no Windows?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Sim! O OmniRoute funciona em Windows, macOS e Linux. Você pode usar npm, Docker, ou o app Electron nativo (.exe). Não precisa de WSL.
+                </div>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                  Onde ficam armazenados meus dados?
+                </button>
+              </h2>
+              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Todos os dados (configurações, banco SQLite, chaves criptografadas, logs de chamadas) ficam em <code>~/.omniroute</code> no seu computador. Em Docker, monte esse caminho como volume para persistir entre reinícios.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

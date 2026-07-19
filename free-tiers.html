@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guia dos 90+ providers gratuitos do OmniRoute e como configurar o Free Stack $0">
+  <title>Providers Gratuitos | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>🆓 Providers Gratuitos</h1>
+        <p class="lead" style="color: var(--text-secondary);">90+ providers com tiers gratuitos, 11 grátis para sempre. Comece a codar sem pagar nada.</p>
+
+        <section class="mt-4">
+          <h2>💰 Quantos tokens grátis?</h2>
+          <div class="alert-info">
+            <strong>~1.6 BILLION tokens grátis/mês</strong> (quota agregada dos tiers oficiais)<br>
+            Até <strong>~2.1 BILLION</strong> no primeiro mês com créditos de cadastro
+          </div>
+          
+          <img src="https://raw.githubusercontent.com/diegosouzapw/OmniRoute/release/v3.8.49/docs/diagrams/free-tier-budget.svg" alt="Free Tier Budget" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1.5rem;">
+          
+          <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+            <strong>Metodologia:</strong> Contamos cada pool gratuito apenas <strong>uma vez</strong> (não inflamos com múltiplos rate limits). Veja <a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/reference/FREE_TIERS.md" target="_blank" class="text-cyan">docs/reference/FREE_TIERS.md</a> para detalhes.
+          </p>
+        </section>
+
+        <section class="mt-4">
+          <h2>🎯 Providers Gratuitos para Sempre (11)</h2>
+          <p>Estes são os melhores para uso diário — ilimitados, sem cartão de crédito, sem expiração.</p>
+          
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>Kiro (AWS Builder ID)</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Claude Sonnet 4.5, Haiku 4.5 — ilimitado via OAuth AWS Builder ID. Conecte no Dashboard → Providers.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Qoder</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">kimi-k2-thinking, qwen3-coder-plus, deepseek-r1... — ilimitado via Google OAuth.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Qwen</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">qwen3-coder-plus, qwen3-coder-flash... — ilimitado via Device Code flow.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Pollinations</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">GPT-NeoX, Stable Diffusion — ilimitado via API key simples.</p>
+            </div>
+            <div class="card-tech">
+              <h4>LongCat</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">150M tokens/dia grátis — API key simples.</p>
+            </div>
+            <div class="card-tech">
+              <h4>SiliconFlow</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Muitos models gratuitos, sem límite estrito.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Z.AI GLM-Flash</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Modelo Z.AI gratuito, ilimitado.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Kilo</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Kilo Code com acesso a models gratuitos via OAuth.</p>
+            </div>
+            <div class="card-tech">
+              <h4>OpenCode Zen</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Models otimizados para agentes de codificação.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Baidu</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Acesso gratuito a modelos Baidu via API key.</p>
+            </div>
+            <div class="card-tech">
+              <h4>Firellama</h4>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Models Open Source gratuitos via API.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📋 Passo a Passo: 4 Passos para $0</h2>
+          <p>Configure estes 4 providers e use o combo "Free Stack" template:</p>
+          
+          <div class="card-tech">
+            <h3>Passo 1: Conectar Kiro (AWS Builder ID OAuth)</h3>
+            <pre><code>Dashboard → Providers → Kiro → Connect
+→ Login com conta AWS → Authorizar
+✅ Claude Sonnet 4.5/Haiku 4.5 ilimitado</code></pre>
+          </div>
+          
+          <div class="card-tech">
+            <h3>Passo 2: Conectar Qoder (Google OAuth)</h3>
+            <pre><code>Dashboard → Providers → Qoder → Connect
+→ Login com Google → Authorizar
+✅ Kimi K2, Qwen, DeepSeek ilimitado</code></pre>
+          </div>
+          
+          <div class="card-tech">
+            <h3>Passo 3: Conectar Qwen (Device Code)</h3>
+            <pre><code>Dashboard → Providers → Qwen → Connect
+→ Copie o código → acesse https://qwen.ai/code
+→ Cole o código → Authorizar
+✅ Qwen3-Coder-Plus ilimitado</code></pre>
+          </div>
+          
+          <div class="card-tech">
+            <h3>Passo 4: Usar o combo Free Stack</h3>
+            <pre><code>Dashboard → Combos → Templates → "Free Stack ($0)"
+→ Ative o combo
+→ Use model: if/kimi-k2-thinking ou auto
+
+✅ Tudo funcionando com $0 de custo!</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🚀 Providers com Tier Gratuito Adicional</h2>
+          <p>Outros providers com créditos iniciais ou quotas mensais:</p>
+          
+          <table>
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Créditos Gratuitos</th>
+                <th>Como Conectar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Groq</td>
+                <td>30 RPM free</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>NVIDIA NIM</td>
+                <td>~40 RPM free, 70+ models</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>Cerebras</td>
+                <td>1M tokens/dia</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>LongCat API</td>
+                <td>50M tokens/dia!</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>Cloudflare Workers AI</td>
+                <td>10K Neurons/dia, 50+ models</td>
+                <td>API Token no Dashboard</td>
+              </tr>
+              <tr>
+                <td>Ollama Cloud</td>
+                <td>Light usage tier free</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>Hyperbolic</td>
+                <td>Free tier com rate limits</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>Together AI</td>
+                <td>Free tier com créditos iniciais</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>Fireworks AI</td>
+                <td>Free tier com rate limits</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+              <tr>
+                <td>DeepSeek</td>
+                <td>Free tier + $50 créditos iniciais</td>
+                <td>API Key no Dashboard</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="mt-4">
+          <h2>🌐 Ollama Cloud (Acesso Remoto a Modelos Ollama)</h2>
+          <p>OmniRoute integra <a href="https://ollama.com/cloud" target="_blank" class="text-cyan">Ollama Cloud</a> com tier gratuito para modelos Open Source:</p>
+          
+          <div class="card-tech">
+            <pre><code># Use no modelo:
+ollamacloud/llama3.2:3b
+ollamacloud/qwen3-coder:8b
+ollamacloud/deepseek-r1:7b
+
+# Free tier: Light usage (limitado mas suficiente para testes)</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🧪 Teste Rápido</h2>
+          <p>Valide que seus providers gratuitos estão funcionando:</p>
+          
+          <div class="card-tech">
+            <pre><code># Teste Kiro (free)
+curl http://localhost:20128/v1/chat/completions \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "if/kimi-k2-thinking",
+    "messages": [{"role": "user", "content": "Olá, mundo!"}]
+  }'</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚠️ Aviso sobre Termos de Serviço</h2>
+          <div class="alert-warning">
+            <strong>Os providers gratuitos podem alterar seus termos!</strong><br>
+            Sempre verifique as políticas no site do provider. Alguns podem exigir verificação de identidade. O OmniRoute não controla os tiers gratuitos — apenas os expõe através do endpoint unificado.
+          </div>
+          
+          <p>Os seguintes providers têm flags de termos que você deve ter em mente:</p>
+          <ul style="color: var(--text-secondary);">
+            <li><strong>Vertex AI</strong> (Google) — pode exigir verificação de identidade</li>
+            <li><strong>Together AI</strong> — free tier pode ter rate limits agressivos</li>
+            <li><strong>DeepSeek</strong> — $50 créditos iniciais mas pode exigir pagamento após</li>
+          </ul>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="combos.html" style="color: var(--text-secondary);">← Combos</a>
+          <a href="compressao.html" class="text-cyan" style="font-weight: 600;">Próximo: Compressão de Tokens →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Referência completa: comandos CLI, variáveis de ambiente, endpoints, links oficiais e comunidade do OmniRoute">
+  <title>📚 Referências | OmniRoute Tutorial</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div id="sidebar-placeholder"></div>
+    
+    <main class="main-content">
+      <div class="breadcrumb-progress"></div>
+      
+      <div class="content-wrapper">
+        <h1>📚 Referências e Comandos</h1>
+        <p class="lead" style="color: var(--text-secondary);">Comandos CLI, variáveis de ambiente, endpoints, links oficiais e tudo que você precisa saber para usar o OmniRoute em produção.</p>
+
+        <section class="mt-4">
+          <h2>🖥️ Comandos CLI</h2>
+          <p>Todos os comandos disponíveis do OmniRoute CLI.</p>
+          
+          <div class="card-tech">
+            <table>
+              <thead>
+                <tr>
+                  <th>Comando</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>omniroute</code></td>
+                  <td>Inicia o servidor (API + dashboard na mesma porta 20128)</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --port 3000</code></td>
+                  <td>Define porta canônica (API) para 3000</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --mcp</code></td>
+                  <td>Inicia servidor MCP com transporte stdio</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --mcp-sse</code></td>
+                  <td>Inicia servidor MCP com transporte SSE</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --mcp-ws</td>
+                  <td>Inicia servidor MCP com transporte WebSocket</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --no-open</code></td>
+                  <td>Não abre o navegador automaticamente na inicialização</td>
+                </tr>
+                <tr>
+                  <td><code>omniroute --help</code></td>
+                  <td>Mostra a ajuda completa com todas as opções</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>⚙️ Variáveis de Ambiente</h2>
+          <p>Configurações avançadas via variáveis de ambiente.</p>
+          
+          <div class="card-tech">
+            <h3>Portas e Rede</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Variável</th>
+                  <th>Default</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>PORT</code></td>
+                  <td><code>20128</code></td>
+                  <td>Porta da API (endpoint <code>/v1</code>)</td>
+                </tr>
+                <tr>
+                  <td><code>DASHBOARD_PORT</code></td>
+                  <td><code>20128</code></td>
+                  <td>Porta do dashboard (use split-port mode para separar)</td>
+                </tr>
+                <tr>
+                  <td><code>HOST</code></td>
+                  <td><code>localhost</td>
+                  <td>Host para bind (use 0.0.0.0 para todas as interfaces)</td>
+                </tr>
+                <tr>
+                  <td><code>PROXY_URL</code></td>
+                  <td><em>vazio</em></td>
+                  <td>Proxy global (ex: http://proxy:8080 ou socks5://proxy:1080)</td>
+                </tr>
+                <tr>
+                  <td><code>HTTP_PROXY</code></td>
+                  <td><em>vazio</em></td>
+                  <td>Proxy HTTP/HTTPS (alternativa a PROXY_URL)</td>
+                </tr>
+                <tr>
+                  <td><code>HTTPS_PROXY</code></td>
+                  <td><em>vazio</em></td>
+                  <td>Proxy HTTPS (alternativa a PROXY_URL)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-tech">
+            <h3>Timeouts</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Variável</th>
+                  <th>Default</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>REQUEST_TIMEOUT_MS</code></td>
+                  <td><code>600000</code></td>
+                  <td>Timeout base para requisições upstream, TLS, API bridge</td>
+                </tr>
+                <tr>
+                  <td><code>STREAM_IDLE_TIMEOUT_MS</code></td>
+                  <td>herda <code>REQUEST_TIMEOUT_MS</code></td>
+                  <td>Gap máximo entre chunks de streaming antes de abortar</td>
+                </tr>
+                <tr>
+                  <td><code>FETCH_TIMEOUT_MS</code></td>
+                  <td>herda <code>REQUEST_TIMEOUT_MS</code></td>
+                  <td>Timeout para chegar aos headers da resposta upstream</td>
+                </tr>
+                <tr>
+                  <td><code>FETCH_HEADERS_TIMEOUT_MS</code></td>
+                  <td>herda <code>FETCH_TIMEOUT_MS</code></td>
+                  <td>Timeout para receber headers da resposta upstream</td>
+                </tr>
+                <tr>
+                  <td><code>FETCH_BODY_TIMEOUT_MS</code></td>
+                  <td>herda <code>FETCH_TIMEOUT_MS</code></td>
+                  <td>Timeout entre body chunks (0 = desativa)</td>
+                </tr>
+                <tr>
+                  <td><code>FETCH_CONNECT_TIMEOUT_MS</code></td>
+                  <td><code>30000</code></td>
+                  <td>Undici TCP connect timeout</td>
+                </tr>
+                <tr>
+                  <td><code>FETCH_KEEPALIVE_TIMEOUT_MS</code></td>
+                  <td><code>4000</code></td>
+                  <td>Undici idle keep-alive socket timeout</td>
+                </tr>
+                <tr>
+                  <td><code>TLS_CLIENT_TIMEOUT_MS</code></td>
+                  <td>herda <code>FETCH_TIMEOUT_MS</code></td>
+                  <td>Timeout para requisições de fingerprint TLS via wreq-js</td>
+                </tr>
+                <tr>
+                  <td><code>API_BRIDGE_PROXY_TIMEOUT_MS</code></td>
+                  <td>herda <code>REQUEST_TIMEOUT_MS</code> ou <code>600000</code></td>
+                  <td>Timeout para /v1 proxy forwarding (API→Dashboard port)</td>
+                </tr>
+                <tr>
+                  <td><code>API_BRIDGE_SERVER_REQUEST_TIMEOUT_MS</code></td>
+                  <td>max(API_BRIDGE_PROXY_TIMEOUT_MS, 300000)</td>
+                  <td>Incoming request timeout no servidor API bridge</td>
+                </tr>
+                <tr>
+                  <td><code>API_BRIDGE_SERVER_HEADERS_TIMEOUT_MS</code></td>
+                  <td><code>60000</td>
+                  <td>Incoming header timeout no servidor API bridge</td>
+                </tr>
+                <tr>
+                  <td><code>API_BRIDGE_SERVER_KEEPALIVE_TIMEOUT_MS</code></td>
+                  <td><code>5000</td>
+                  <td>Keep-alive timeout no servidor API bridge</td>
+                </tr>
+                <tr>
+                  <td><code>API_BRIDGE_SERVER_SOCKET_TIMEOUT_MS</td>
+                  <td><code>0</code></td>
+                  <td>Socket inactivity timeout (0 = desativa)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-tech">
+            <h3>Outros</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Variável</th>
+                  <th>Default</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>DATA_DIR</code></td>
+                  <td><code>~/.omniroute</code></td>
+                  <td>Diretório para banco SQLite, configs, chaves, logs</td>
+                </tr>
+                <tr>
+                  <td><code>DISABLE_SQLITE_AUTO_BACKUP</code></td>
+                  <td><code>false</code></td>
+                  <td>Desativa backup automático do banco a cada 24h</td>
+                </tr>
+                <tr>
+                  <td><code>PROVIDER_LIMITS_SYNC_INTERVAL_MINUTES</code></td>
+                  <td><code>70</code></td>
+                  <td>Intervalo (min) para atualizar cache de quotas dos providers</td>
+                </tr>
+                <tr>
+                  <td><code>NEXT_PUBLIC_BASE_URL</code></td>
+                  <td><code>http://localhost:20128</code></td>
+                  <td>URL base para o frontend (usado em split-port mode)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>🔗 Endpoints Principais</h2>
+          <p>Endpoints HTTP disponíveis no servidor OmniRoute.</p>
+          
+          <div class="card-tech">
+            <h3>API Principal (OpenAI-compatible)</h3>
+            <pre><code>GET    http://localhost:20128/v1/models          # Lista modelos disponíveis
+POST   http://localhost:20128/v1/chat/completions # Chat completion
+POST   http://localhost:20128/v1/completions      # Text completion (legado)
+POST   http://localhost:20128/v1/embeddings       # Embeddings
+POST   http://localhost:20128/v1/images/generations # Geração de imagens
+POST   http://localhost:20128/v1/audio/transcriptions # Transcrição de áudio
+POST   http://localhost:20128/v1/audio/speech     # Text-to-speech
+POST   http://localhost:20128/v1/moderations      # Moderação de conteúdo
+POST   http://localhost:20128/v1/rerank           # Reranking de documentos
+POST   http://localhost:20128/v1/responses        # OpenAI Responses API (Codex)</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Dashboard (Web Interface)</h3>
+            <pre><code>GET    http://localhost:20128/          # Dashboard principal
+GET    http://localhost:20128/dashboard/providers   # Gerenciamento de providers
+GET    http://localhost:20128/dashboard/combos      # Configurar combos
+GET    http://localhost:20128/dashboard/endpoints   # Gerenciar API keys
+GET    http://localhost:20128/dashboard/analytics    # Visão de custos e uso
+GET    http://localhost:20128/dashboard/health      # Status do sistema
+GET    http://localhost:20128/dashboard/logs        # Logs unificados
+GET    http://localhost:20128/dashboard/mcp         # Gerenciamento MCP
+GET    http://localhost:20128/dashboard/a2a         # Gerenciamento A2A
+GET    http://localhost:20128/dashboard/translator   # Playground de formatos
+GET    http://localhost:20128/dashboard/settings     # Configurações gerais</code></pre>
+          </div>
+
+          <div class="card-tech">
+            <h3>Protocolos Avançados</h3>
+            <pre><code>GET    http://localhost:20128/.well-known/agent.json  # Agent Card (descoberta A2A)
+POST   http://localhost:20128/a2a                     # Endpoint A2A JSON-RPC 2.0
+GET    http://localhost:20128/mcp/health              # Health check do processo MCP
+GET    http://localhost:20128/mcp/tools               # Lista de 94 ferramentas MCP disponíveis</code></pre>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>📖 Documentação Oficial</h2>
+          <p>Links para a documentação completa do projeto.</p>
+          
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>README Principal</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/README.md" target="_blank" class="text-cyan">github.com/diegosouzapw/OmniRoute/README.md</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>Guia de Instalação</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/i18n/pt-BR/README.md#in%C3%ADcio-rápido" target="_blank" class="text-cyan">Instalação (pt-BR)</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>Free Tiers</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/reference/FREE_TIERS.md" target="_blank" class="text-cyan">docs/reference/FREE_TIERS.md</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>Compression Engines</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/compression/COMPRESSION_ENGINES.md" target="_blank" class="text-cyan">docs/compression/COMPRESSION_ENGINES.md</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>Routing Strategies</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/routing/AUTO-COMBO.md" target="_blank" class="text-cyan">docs/routing/AUTO-COMBO.md</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>MCP Server</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/mcp_alchemy/MCP_SERVER.md" target="_blank" class="text-cyan">docs/mcp_alchemy/MCP_SERVER.md</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>A2A Protocol</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/a2a/A2A_PROTOCOL.md" target="_blank" class="text-cyan">docs/a2a/A2A_PROTOCOL.md</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>Quota Share</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/routing/QUOTA_SHARE.md" target="_blank" class="text-cyan">docs/routing/QUOTA_SHARE.md</a></p>
+            </div>
+            <div class="card-tech">
+              <h4>Guia de Proxy</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/proxy/PROXY_GUIDE.md" target="_blank" class="text-cyan">docs/proxy/PROXY_GUIDE.md</a></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-4">
+          <h2>👥 Comunidade e Suporte</h2>
+          <p>Onde encontrar ajuda, reportar bugs e contribuir.</p>
+          
+          <div class="card-grid">
+            <div class="card-tech">
+              <h4>💬 Discord</h4>
+              <p><a href="https://discord.gg/U47eFqAXCn" target="_blank" class="text-cyan">discord.gg/U47eFqAXCn</a></p>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Suporte em tempo real, dicas, novidades</p>
+            </div>
+            <div class="card-tech">
+              <h4>📱 Telegram</h4>
+              <p><a href="https://t.me/omnirouteOficial" target="_blank" class="text-cyan">t.me/omnirouteOficial</a></p>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Anúncios e atualizações rápidas</p>
+            </div>
+            <div class="card-tech">
+              <h4>📲 WhatsApp</h4>
+              <p><a href="https://chat.whatsapp.com/JI7cDQ1GyaiDHhVBpLxf8b?mode=gi_t" target="_blank" class="text-cyan">WhatsApp Global</a><br>
+              <a href="https://chat.whatsapp.com/LTSpdFhXTxjH4R6CCNiKWz" target="_blank" class="text-cyan">WhatsApp Brasil</a></p>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Grupos de discussão regional</p>
+            </div>
+            <div class="card-tech">
+              <h4>🐛 Reportar Bugs</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/issues" target="_blank" class="text-cyan">github.com/diegosouzapw/OmniRoute/issues</a></p>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">Use <code>npm run system-info</code> para gerar diagnóstico</p>
+            </div>
+            <div class="card-tech">
+              <h4>💖 Contribuir</h4>
+              <p><a href="https://github.com/diegosouzapw/OmniRoute/blob/main/CONTRIBUTING.md" target="_blank" class="text-cyan">CONTRIBUTING.md</a></p>
+              <p style="color: var(--text-secondary); font-size: 0.9rel;">Issues marcadas como <em>good first issue</em></p>
+            </div>
+          </div>
+          
+          <div class="alert-info">
+            <strong>💡 Dica para bugs:</strong> Sempre rode <code>npm run system-info</code> antes de reportar um issue. Gera <code>system-info.txt</code> com versão do Node, OS, detalhes do OmniRoute, CLI tools instalados, status Docker/PM2 — essencial para triagem rápida.
+          </div>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+          <a href="proxy-regiao.html" style="color: var(--text-secondary);">← Proxy e Desbloqueio</a>
+          <a href="index.html" class="text-cyan" style="font-weight: 600;">Voltar ao Início →</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema"></button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
