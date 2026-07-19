@@ -342,7 +342,7 @@ a:hover {
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   width: 44px;
-  height: 34px;
+  padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
