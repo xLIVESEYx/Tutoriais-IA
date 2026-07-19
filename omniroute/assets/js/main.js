@@ -4,6 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   initThemeToggle();
+  initHomeLink();
   initCodeCopyButtons();
   initSidebarHighlight();
   initMobileMenu();
@@ -47,6 +48,27 @@ function updateThemeIcon(theme) {
     : '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" /></svg>';
   
   toggleBtn.innerHTML = icon;
+}
+
+// =========================================
+// Home Link (back to landing page)
+// =========================================
+
+function initHomeLink() {
+  const homeLink = document.createElement('a');
+  homeLink.className = 'home-link';
+  homeLink.href = '../';
+  homeLink.setAttribute('aria-label', 'Mais Tutoriais');
+  homeLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 01-1.06 1.06l-.69-.69V19.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75V15h-3v4.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75v-6.6l-.69.69a.75.75 0 01-1.06-1.06l8.69-8.69z"/></svg>';
+
+  homeLink.addEventListener('click', function() {
+    this.style.transform = 'scale(1.1) rotate(360deg)';
+    setTimeout(() => {
+      this.style.transform = '';
+    }, 300);
+  });
+
+  document.body.appendChild(homeLink);
 }
 
 // =========================================

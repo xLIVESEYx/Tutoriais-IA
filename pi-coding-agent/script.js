@@ -86,6 +86,14 @@ function initThemeToggle() {
   });
 
   document.body.appendChild(toggle);
+
+  // Home link (back to landing page with all tutorials)
+  const homeLink = document.createElement('a');
+  homeLink.className = 'home-link';
+  homeLink.href = '../';
+  homeLink.setAttribute('aria-label', 'Mais Tutoriais');
+  homeLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 01-1.06 1.06l-.69-.69V19.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75V15h-3v4.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75v-6.6l-.69.69a.75.75 0 01-1.06-1.06l8.69-8.69z"/></svg>';
+  document.body.appendChild(homeLink);
 }
 
 function updateToggleText(toggle, theme) {

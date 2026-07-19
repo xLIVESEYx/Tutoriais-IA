@@ -419,6 +419,36 @@ pre code {
   fill: white;
 }
 
+.home-link {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  background: var(--gradient-primary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card);
+  z-index: 1001;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.home-link:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: var(--glow-purple);
+}
+
+.home-link svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
 /* =========================================
    FAQ Accordion
    ========================================= */
@@ -575,8 +605,4 @@ tbody tr:hover {
   margin: 1.5rem 0;
 }
 
-.back-home:hover {
-  background: var(--bg-tertiary);
-  color: var(--accent-cyan) !important;
-  opacity: 1 !important;
-}
+
