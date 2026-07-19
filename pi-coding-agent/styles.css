@@ -321,7 +321,8 @@ a:hover {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  padding: 0.5rem 1rem;
+  height: 41px;
+  padding: 0 1rem;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
