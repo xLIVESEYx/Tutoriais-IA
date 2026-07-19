@@ -37,7 +37,7 @@ opencode/
 │   │   └── style.css           # Tema dark tech + light mode + componentes
 │   ├── js/
 │   │   └── main.js             # Copiar código, toggle tema, sidebar mobile
-│   └── favicon.svg             # Favicon do site
+│   └── favicon.png             # Favicon oficial do OpenCode
 ├── shared/
 │   └── sidebar.html            # Sidebar reutilizável via fetch()
 └── README.md

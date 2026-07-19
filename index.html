@@ -70,6 +70,7 @@
     }
 
     .card .icon { font-size: 2.4rem; line-height: 1; margin-bottom: 0.8rem; }
+    .card .logo-img { height: 48px; width: auto; margin-bottom: 0.8rem; filter: brightness(0) invert(1); }
     .card h2 { margin: 0 0 0.4rem; font-size: 1.25rem; font-weight: 600; }
     .card p  { margin: 0; color: var(--text-muted); font-size: 0.95rem; flex-grow: 1; }
     .card .go {
@@ -99,21 +100,21 @@
 
   <main class="cards">
     <a class="card" href="omniroute/">
-      <span class="icon">🚀</span>
+      <span class="icon" style="font-size: 3rem; letter-spacing: -2px;">◆</span>
       <h2>OmniRoute</h2>
       <p>Gateway de IA gratuito com 265+ providers, fallback automático, compressão de tokens e 90+ tiers grátis.</p>
       <span class="go">Acessar tutorial &rarr;</span>
     </a>
 
     <a class="card" href="pi-coding-agent/">
-      <span class="icon">🤖</span>
+      <img class="logo-img" src="https://pi.dev/logo-auto.svg" alt="Pi Logo">
       <h2>Pi Coding Agent</h2>
       <p>Um harness minimalista de codificação para terminal. Instalação, ferramentas, modos, providers, SDK e mais.</p>
       <span class="go">Acessar tutorial &rarr;</span>
     </a>
 
     <a class="card" href="opencode/">
-      <span class="icon">💻</span>
+      <img class="logo-img" src="https://opencode.ai/favicon-96x96-v3.png" alt="OpenCode Logo" style="border-radius: 8px;">
       <h2>OpenCode</h2>
       <p>Agente de IA open source para codificação. 75+ providers, LSP, agentes multi-modo, desktop, web e mais.</p>
       <span class="go">Acessar tutorial &rarr;</span>
