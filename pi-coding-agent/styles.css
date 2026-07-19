@@ -337,11 +337,11 @@ a:hover {
 .home-link {
   position: fixed;
   top: 1rem;
-  right: 5.5rem;
+  right: 7.5rem;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  width: 38px;
+  width: 44px;
   height: 34px;
   display: flex;
   align-items: center;
@@ -358,8 +358,8 @@ a:hover {
 }
 
 .home-link svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   fill: currentColor;
 }
 
