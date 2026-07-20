@@ -147,10 +147,13 @@ function initMobileMenu() {
 
     if (toggle && sidebar) {
       sidebar.classList.toggle('show');
+      toggle.classList.toggle('active');
     } else if (sidebar && sidebar.classList.contains('show') &&
                !e.target.closest('.sidebar') &&
                !e.target.closest('.mobile-menu-toggle')) {
       sidebar.classList.remove('show');
+      const t = document.querySelector('.mobile-menu-toggle');
+      if (t) t.classList.remove('active');
     }
   });
 }
