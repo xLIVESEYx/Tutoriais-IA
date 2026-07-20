@@ -147,7 +147,7 @@ function initScrollToTop() {
   btn.className = 'scroll-top-btn';
   btn.type = 'button';
   btn.setAttribute('aria-label', 'Voltar ao topo');
-  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 01-1.06 1.06l-.69-.69V19.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75V15h-3v4.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75v-6.6l-.69.69a.75.75 0 01-1.06-1.06l8.69-8.69z"/></svg>';
+  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.75a.75.75 0 01.53.22l7.5 7.5a.75.75 0 01-1.06 1.06L12.75 5.56V20a.75.75 0 01-1.5 0V5.56l-6.22 6.22a.75.75 0 11-1.06-1.06l7.5-7.5a.75.75 0 01.53-.22z"/></svg>';
 
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
