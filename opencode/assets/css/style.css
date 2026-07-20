@@ -230,6 +230,17 @@ pre code {
 .hero h1 {
   font-size: 3.5rem;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.hero-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  flex-shrink: 0;
 }
 
 .hero p {
