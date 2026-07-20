@@ -72,18 +72,15 @@ h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   color: var(--accent-pi);
-  background: linear-gradient(45deg, var(--accent-pi), var(--accent-blue));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
 }
 
-@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+@supports (background-clip: text) or (-webkit-background-clip: text) {
   h1 {
-    background: none;
-    -webkit-text-fill-color: initial;
-    color: var(--accent-pi);
+    background: linear-gradient(45deg, var(--accent-pi), var(--accent-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
   }
 }
 
@@ -400,6 +397,7 @@ a:hover {
   color: white;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transform: translateY(12px);
   transition: all 0.3s ease;
   z-index: 999;
@@ -409,6 +407,7 @@ a:hover {
 .scroll-top-btn.visible {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transform: translateY(0);
 }
 
@@ -428,7 +427,6 @@ a:hover {
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 /* Accessibility: respect reduced motion preference */

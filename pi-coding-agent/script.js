@@ -73,7 +73,7 @@ function initThemeToggle() {
   const savedTheme = localStorage.getItem('pi-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateToggleText(toggle, savedTheme);
-  toggle.setAttribute('aria-pressed', String(savedTheme === 'dark'));
+  toggle.setAttribute('aria-pressed', String(savedTheme === 'light'));
 
   toggle.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -82,7 +82,7 @@ function initThemeToggle() {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('pi-theme', newTheme);
     updateToggleText(toggle, newTheme);
-    toggle.setAttribute('aria-pressed', String(newTheme === 'dark'));
+    toggle.setAttribute('aria-pressed', String(newTheme === 'light'));
   });
 
   document.body.appendChild(toggle);
@@ -90,15 +90,15 @@ function initThemeToggle() {
   // Home link (back to landing page with all tutorials)
   const homeLink = document.createElement('a');
   homeLink.className = 'home-link';
-  homeLink.href = '../';
+  homeLink.href = '../index.html';
   homeLink.setAttribute('aria-label', 'Mais Tutoriais');
   homeLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 01-1.06 1.06l-.69-.69V19.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75V15h-3v4.5a.75.75 0 01-.75.75h-3.5a.75.75 0 01-.75-.75v-6.6l-.69.69a.75.75 0 01-1.06-1.06l8.69-8.69z"/></svg>';
   document.body.appendChild(homeLink);
 }
 
 function updateToggleText(toggle, theme) {
-  // Botão indica a AÇÃO ao clicar (muda para o tema oposto), não o estado atual.
-  toggle.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+  // Botão indica o estado ATUAL do tema (dark_show = escuro ativo, light_show = claro ativo)
+  toggle.textContent = theme === 'dark' ? '🌙 Dark' : '☀️ Light';
 }
 
 // Smooth scrolling for navigation links
@@ -122,7 +122,7 @@ function smoothScrollTo(id) {
       behavior: 'smooth',
       block: 'start'
     });
-    history.replaceState(null, '', `#${id}`);
+    history.pushState(null, '', `#${id}`);
     return true;
   }
   return false;
