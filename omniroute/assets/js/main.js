@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
   initThemeToggle();
   initHomeLink();
   initCodeCopyButtons();
-  initSidebarHighlight();
-  initMobileMenu();
   loadSharedComponents();
 });
 
@@ -140,20 +138,21 @@ function initSidebarHighlight() {
 // =========================================
 
 function initMobileMenu() {
-  const menuToggle = document.querySelector('.mobile-menu-toggle');
-  const sidebar = document.querySelector('.sidebar');
-  
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', function() {
+  if (window._mobileMenuInitialized) return;
+  window._mobileMenuInitialized = true;
+
+  document.addEventListener('click', function(e) {
+    const toggle = e.target.closest('.mobile-menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (toggle && sidebar) {
       sidebar.classList.toggle('show');
-    });
-    
-    document.addEventListener('click', function(e) {
-      if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-        sidebar.classList.remove('show');
-      }
-    });
-  }
+    } else if (sidebar && sidebar.classList.contains('show') &&
+               !e.target.closest('.sidebar') &&
+               !e.target.closest('.mobile-menu-toggle')) {
+      sidebar.classList.remove('show');
+    }
+  });
 }
 
 // =========================================
@@ -169,6 +168,7 @@ function loadSharedComponents() {
       .then(html => {
         sidebarPlaceholder.innerHTML = html;
         initSidebarHighlight();
+        initMobileMenu();
       })
       .catch(err => console.error('Erro ao carregar sidebar:', err));
   }
